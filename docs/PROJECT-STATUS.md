@@ -1,8 +1,8 @@
 # 📊 Statut du Projet - App Maths
 
 **Date de mise à jour** : 2026-01-20  
-**Version** : 0.1.0  
-**Phase** : ✅ Sprint 0 - Configuration Complétée !
+**Version** : 0.2.0  
+**Phase** : 🎮 Sprint 1 - Core Game MVP COMPLÉTÉ !
 
 ---
 
