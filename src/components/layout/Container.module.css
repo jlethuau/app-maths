@@ -1,0 +1,52 @@
+/* Container Component Styles */
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
+}
+
+/* === MAX WIDTHS === */
+
+.max-sm {
+  max-width: 640px;
+}
+
+.max-md {
+  max-width: 768px;
+}
+
+.max-lg {
+  max-width: 1024px;
+}
+
+.max-xl {
+  max-width: 1280px;
+}
+
+.max-full {
+  max-width: 100%;
+}
+
+/* === MODIFIERS === */
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* === RESPONSIVE === */
+
+@media (min-width: 640px) {
+  .container {
+    padding: 0 var(--spacing-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 var(--spacing-8);
+  }
+}

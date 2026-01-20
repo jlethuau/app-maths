@@ -1,0 +1,325 @@
+# Cursor Rules - App Maths Multiplication
+
+## Contexte du Projet
+Application web mobile-first React + Vite pour l'apprentissage des tables de multiplication (niveau CE2).
+Focus : simplicité, qualité, maintenabilité, UI moderne et gamification.
+
+## Principes Généraux
+
+### Code Quality
+- Privilégier la simplicité et la lisibilité
+- Éviter la sur-ingénierie
+- Code auto-documenté avec noms explicites
+- Préférer la composition à l'héritage
+- Écrire du code testable
+
+### Architecture
+- Structure modulaire par feature
+- Composants React fonctionnels avec hooks
+- Séparation claire des responsabilités
+- Custom hooks pour la logique réutilisable
+- Context API pour l'état global léger
+
+## Stack Technique
+
+### Core
+- React 18+ avec Vite
+- TypeScript strict mode
+- CSS Modules ou Tailwind CSS pour styling
+- React Router pour navigation
+
+### État et Données
+- useState/useReducer pour état local
+- Context API pour état global
+- LocalStorage pour persistance (phase 1)
+- React Query si backend nécessaire
+
+### Qualité
+- ESLint avec config recommandée
+- Prettier pour formatage
+- Vitest pour tests unitaires
+- React Testing Library pour tests composants
+
+## Structure de Projet
+
+```
+src/
+├── features/          # Features isolées
+│   ├── game/         # Logique de jeu
+│   ├── gamification/ # Système de récompenses
+│   └── stats/        # Statistiques et progression
+├── components/        # Composants réutilisables
+│   ├── ui/           # Composants UI de base
+│   └── layout/       # Composants de mise en page
+├── hooks/            # Custom hooks
+├── utils/            # Fonctions utilitaires
+├── types/            # Types TypeScript
+├── constants/        # Constantes
+└── styles/           # Styles globaux
+```
+
+## Conventions de Code
+
+### Naming
+- Composants : PascalCase (ex: `GameBoard.tsx`)
+- Fichiers utilitaires : camelCase (ex: `calculateScore.ts`)
+- Hooks personnalisés : use + PascalCase (ex: `useGameState.ts`)
+- Constantes : UPPER_SNAKE_CASE (ex: `MAX_ATTEMPTS`)
+- CSS Modules : ComponentName.module.css
+
+### TypeScript
+- Typer tous les props et états
+- Éviter `any`, utiliser `unknown` si nécessaire
+- Interfaces pour objets, types pour unions
+- Exporter les types avec les composants
+
+### Composants React
+```typescript
+// Structure type d'un composant
+import { FC } from 'react';
+import styles from './ComponentName.module.css';
+
+interface ComponentNameProps {
+  prop1: string;
+  prop2?: number;
+  onAction: (value: string) => void;
+}
+
+export const ComponentName: FC<ComponentNameProps> = ({
+  prop1,
+  prop2 = 10,
+  onAction,
+}) => {
+  // Hooks en premier
+  const [state, setState] = useState();
+  
+  // Handlers
+  const handleAction = () => {
+    // logique
+  };
+  
+  // Render
+  return (
+    <div className={styles.container}>
+      {/* JSX */}
+    </div>
+  );
+};
+```
+
+### Custom Hooks
+```typescript
+// Toujours commencer par 'use'
+export const useGameLogic = () => {
+  const [state, setState] = useState();
+  
+  const actions = {
+    start: () => {},
+    reset: () => {},
+  };
+  
+  return { state, ...actions };
+};
+```
+
+## Mobile First
+
+### Responsive Design
+- Design mobile d'abord (320px+)
+- Breakpoints standards : sm(640px), md(768px), lg(1024px)
+- Utiliser viewport units avec prudence
+- Touch-friendly (boutons min 44x44px)
+- Tester sur vrais devices
+
+### Performance
+- Lazy loading des routes
+- Code splitting automatique avec Vite
+- Optimiser images (WebP, lazy loading)
+- Minimiser re-renders (React.memo si nécessaire)
+- Utiliser Web Vitals pour mesurer
+
+## Accessibilité
+
+- Sémantique HTML correcte
+- Attributs ARIA quand nécessaire
+- Contraste couleurs respecté (WCAG AA)
+- Navigation clavier fonctionnelle
+- Labels sur tous les inputs
+
+## Git Workflow
+
+### Branches
+- `main` : production ready
+- `develop` : développement principal
+- `feature/*` : nouvelles fonctionnalités
+- `fix/*` : corrections de bugs
+- `refactor/*` : refactoring
+
+### Commits
+Format : `type(scope): message`
+Types : feat, fix, refactor, style, docs, test, chore
+
+Exemples :
+- `feat(game): add multiplication quiz component`
+- `fix(stats): correct score calculation`
+- `refactor(ui): improve button component structure`
+
+### Messages
+- Impératif présent ("add" pas "added")
+- Message concis (<50 chars titre)
+- Description détaillée si nécessaire
+
+## Documentation
+
+### Composants
+- JSDoc pour composants complexes
+- README par feature si nécessaire
+- Exemples d'utilisation dans Storybook (si implémenté)
+
+### Code
+- Commenter le "pourquoi" pas le "quoi"
+- Documenter les algorithmes complexes
+- Garder les commentaires à jour
+
+## UI/UX Guidelines
+
+### Design System
+- Palette de couleurs cohérente (définir en CSS variables)
+- Espacements consistants (système 4/8px)
+- Typographie claire et lisible
+- Animations subtiles et purposeful
+
+### Gamification
+- Feedback immédiat sur actions
+- Animations de récompense engageantes
+- Progression visible et encourageante
+- Célébrer les succès
+
+### Enfants (CE2)
+- Textes courts et clairs
+- Icônes explicites
+- Couleurs vives mais pas agressives
+- Sons optionnels mais encourageants
+- Éviter frustration (difficulté progressive)
+
+## Performance Checklist
+
+- [ ] Bundle size < 200KB (gzipped)
+- [ ] First Contentful Paint < 1.5s
+- [ ] Time to Interactive < 3s
+- [ ] Pas de layout shifts
+- [ ] Lighthouse score > 90
+
+## Testing Strategy
+
+### Tests Unitaires
+- Fonctions utilitaires : 100% coverage
+- Hooks personnalisés : tests complets
+- Logique métier : tests exhaustifs
+
+### Tests Composants
+- Render sans erreur
+- Interactions utilisateur
+- Props variations
+- États différents
+
+### Tests E2E (phase 2)
+- Parcours utilisateur critiques
+- Cypress ou Playwright
+
+## AI-Assisted Development
+
+### Avec Cursor
+- Utiliser le contexte du projet (@)
+- Demander des reviews de code
+- Générer tests unitaires
+- Refactoring assisté
+
+### Bonnes Pratiques IA
+- Valider et comprendre le code généré
+- Tester systématiquement
+- Adapter aux conventions du projet
+- Documenter les choix
+
+## Méthode BMAD
+
+### Brief (B)
+- Définir objectifs clairs
+- Identifier contraintes
+- Lister fonctionnalités essentielles
+
+### Modeling (M)
+- Modéliser données (types TS)
+- Définir interfaces
+- Diagrammes si nécessaire
+
+### Architecture (A)
+- Structure de projet
+- Flux de données
+- Composants principaux
+
+### Development (D)
+- Développement itératif
+- Tests continus
+- Reviews régulières
+
+## Commandes Utiles
+
+```bash
+# Développement
+npm run dev
+
+# Build production
+npm run build
+npm run preview
+
+# Linting
+npm run lint
+npm run lint:fix
+
+# Tests
+npm run test
+npm run test:ui
+npm run test:coverage
+
+# Types checking
+npm run type-check
+```
+
+## Optimisations Vite
+
+- Utiliser `import.meta.env` pour variables d'environnement
+- Configurer aliases dans vite.config
+- Activer compression dans build
+- Configurer cache correctement
+
+## Anti-patterns à Éviter
+
+- ❌ Props drilling excessif (utiliser Context)
+- ❌ useState pour dérivations (utiliser useMemo)
+- ❌ useEffect pour synchronisation (considérer alternatives)
+- ❌ Inline styles (utiliser CSS Modules)
+- ❌ Composants > 300 lignes (découper)
+- ❌ Logique métier dans composants (extraire)
+- ❌ Magic numbers (utiliser constantes)
+
+## Sécurité
+
+- Valider inputs utilisateur
+- Sanitizer données si backend
+- Pas de secrets dans le code
+- HTTPS en production
+- CSP headers configurés
+
+## Next Steps Checklist
+
+- [ ] Initialiser projet Vite + React + TypeScript
+- [ ] Configurer ESLint + Prettier
+- [ ] Initialiser Git avec gitflow
+- [ ] Créer structure de dossiers
+- [ ] Définir types de base
+- [ ] Configurer système de design (couleurs, tokens)
+- [ ] Implémenter composants UI de base
+- [ ] Développer features par ordre de priorité
+- [ ] Tests au fur et à mesure
+- [ ] Documentation continue

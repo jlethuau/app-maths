@@ -1,0 +1,182 @@
+/* App Component Styles */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-6) 0;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  padding: var(--spacing-4) 0;
+}
+
+/* === HEADER === */
+
+.title {
+  font-size: var(--font-size-5xl);
+  font-weight: var(--font-weight-extrabold);
+  text-align: center;
+  margin: 0;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.subtitle {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin: var(--spacing-2) 0 0;
+  animation: fadeIn 0.6s ease-out 0.1s backwards;
+}
+
+/* === WELCOME CARD === */
+
+.welcomeCard {
+  animation: slideInBottom 0.6s ease-out 0.2s backwards;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-6);
+  text-align: center;
+}
+
+.icon {
+  font-size: var(--font-size-6xl);
+  animation: float 3s ease-in-out infinite;
+}
+
+.cardContent h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.cardContent p {
+  max-width: 500px;
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  width: 100%;
+  margin-top: var(--spacing-4);
+}
+
+/* === FEATURES === */
+
+.features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-4);
+  animation: fadeIn 0.6s ease-out 0.4s backwards;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-3);
+  text-align: center;
+}
+
+.featureIcon {
+  font-size: var(--font-size-4xl);
+}
+
+.feature h3 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-primary);
+}
+
+.feature p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* === ANIMATIONS === */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* === RESPONSIVE === */
+
+@media (min-width: 640px) {
+  .content {
+    gap: var(--spacing-12);
+    padding: var(--spacing-8) 0;
+  }
+
+  .title {
+    font-size: var(--font-size-6xl);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-2xl);
+  }
+
+  .buttonGroup {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .buttonGroup button {
+    flex: 0 1 auto;
+    min-width: 200px;
+  }
+
+  .features {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .app {
+    padding: var(--spacing-12) 0;
+  }
+
+  .features {
+    gap: var(--spacing-8);
+  }
+}
