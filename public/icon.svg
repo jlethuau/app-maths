@@ -11,8 +11,8 @@
   <!-- Background circle -->
   <circle cx="256" cy="256" r="240" fill="url(#grad1)"/>
   
-  <!-- Multiplication symbol (×) -->
-  <text x="256" y="340" font-family="Arial, sans-serif" font-size="240" font-weight="bold" fill="white" text-anchor="middle">×</text>
+  <!-- Multiplication symbol -->
+  <text x="256" y="340" font-family="Arial, sans-serif" font-size="240" font-weight="bold" fill="white" text-anchor="middle">&#215;</text>
   
   <!-- Small decorative numbers -->
   <text x="140" y="150" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="rgba(255,255,255,0.4)">2</text>
