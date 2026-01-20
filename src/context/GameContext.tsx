@@ -77,10 +77,13 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
       if (!session || !currentQuestion) return false;
 
       const isCorrect = validateAnswer(currentQuestion, answer);
+      
+      // Le combo augmente SEULEMENT si la réponse est correcte
+      // Il revient à 0 si la réponse est incorrecte
       const newCombo = isCorrect ? session.combo + 1 : 0;
       const comboMultiplier = getComboMultiplier(newCombo);
 
-      // Calcul du score (le temps sera géré par le composant Timer)
+      // Calcul du score avec le nouveau combo
       const scoreCalc = calculateScore(isCorrect, newCombo);
 
       // Mettre à jour la question
@@ -97,12 +100,14 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
       const updatedQuestions = [...session.questions];
       updatedQuestions[session.currentQuestionIndex] = updatedQuestion;
 
+      // IMPORTANT: Le score s'accumule (session.score + nouveaux points)
+      // Il ne revient JAMAIS à 0 entre les questions
       setSession({
         ...session,
         questions: updatedQuestions,
-        score: session.score + scoreCalc.totalPoints,
-        combo: newCombo,
-        maxCombo: Math.max(session.maxCombo, newCombo),
+        score: session.score + scoreCalc.totalPoints, // Accumulation du score
+        combo: newCombo, // Combo actuel (série en cours)
+        maxCombo: Math.max(session.maxCombo, newCombo), // Meilleure série
       });
 
       // Ajouter les points au total utilisateur si correct

@@ -1,9 +1,9 @@
 /* ScoreDisplay Component Styles */
 
 .scoreContainer {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-6);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--spacing-3);
   padding: var(--spacing-4);
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
@@ -11,9 +11,13 @@
   backdrop-filter: blur(10px);
 }
 
-.scoreSection {
-  flex: 1;
+.scoreSection,
+.comboSection,
+.maxComboSection {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
 }
 
 .label {
@@ -22,9 +26,9 @@
   font-weight: var(--font-weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: var(--spacing-1);
 }
 
+/* Score */
 .score {
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-extrabold);
@@ -32,32 +36,30 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
 }
 
-/* Combo Section */
-.comboSection {
+/* Combo (série en cours) */
+.comboValue {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
   display: flex;
   align-items: center;
-  gap: var(--spacing-2);
-  padding: var(--spacing-2) var(--spacing-4);
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: var(--border-radius-lg);
-  opacity: 0;
-  transform: scale(0.8);
+  justify-content: center;
+  gap: var(--spacing-1);
   transition: all var(--transition-base);
 }
 
+.comboNumber {
+  min-width: 30px;
+}
+
 .comboActive {
-  opacity: 1;
-  transform: scale(1);
   animation: comboPulse 0.6s ease-in-out;
 }
 
-.comboLabel {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-extrabold);
-  text-shadow: 0 0 10px currentColor;
+.comboActive .comboNumber {
+  font-size: var(--font-size-3xl);
 }
 
 .comboIcon {
@@ -65,15 +67,9 @@
   animation: float 1s ease-in-out infinite;
 }
 
-/* Max Combo */
-.maxComboSection {
-  text-align: center;
-  padding-left: var(--spacing-4);
-  border-left: 1px solid var(--color-border);
-}
-
+/* Max Combo (meilleure série) */
 .maxCombo {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   color: var(--color-primary-light);
 }
