@@ -74,50 +74,61 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
   // Répondre à une question
   const answerQuestion = useCallback(
     (answer: number): boolean => {
-      if (!session || !currentQuestion) return false;
+      // Variable pour capturer le résultat
+      let resultIsCorrect = false;
 
-      const isCorrect = validateAnswer(currentQuestion, answer);
-      
-      // Le combo augmente SEULEMENT si la réponse est correcte
-      // Il revient à 0 si la réponse est incorrecte
-      const newCombo = isCorrect ? session.combo + 1 : 0;
-      const comboMultiplier = getComboMultiplier(newCombo);
+      setSession((currentSession) => {
+        if (!currentSession) return currentSession;
 
-      // Calcul du score avec le nouveau combo
-      const scoreCalc = calculateScore(isCorrect, newCombo);
+        const currentQ = currentSession.questions[currentSession.currentQuestionIndex];
+        if (!currentQ) return currentSession;
 
-      // Mettre à jour la question
-      const updatedQuestion: Question = {
-        ...currentQuestion,
-        userAnswer: answer,
-        isCorrect,
-        attempts: currentQuestion.attempts + 1,
-        pointsEarned: scoreCalc.totalPoints,
-        comboMultiplier,
-      };
+        const isCorrect = validateAnswer(currentQ, answer);
+        resultIsCorrect = isCorrect; // Capturer pour le return
+        
+        // Le combo augmente SEULEMENT si la réponse est correcte
+        // Il revient à 0 si la réponse est incorrecte
+        const newCombo = isCorrect ? currentSession.combo + 1 : 0;
+        const comboMultiplier = getComboMultiplier(newCombo);
 
-      // Mettre à jour la session
-      const updatedQuestions = [...session.questions];
-      updatedQuestions[session.currentQuestionIndex] = updatedQuestion;
+        // Calcul du score avec le nouveau combo
+        const scoreCalc = calculateScore(isCorrect, newCombo);
 
-      // IMPORTANT: Le score s'accumule (session.score + nouveaux points)
-      // Il ne revient JAMAIS à 0 entre les questions
-      setSession({
-        ...session,
-        questions: updatedQuestions,
-        score: session.score + scoreCalc.totalPoints, // Accumulation du score
-        combo: newCombo, // Combo actuel (série en cours)
-        maxCombo: Math.max(session.maxCombo, newCombo), // Meilleure série
+        // Mettre à jour la question
+        const updatedQuestion: Question = {
+          ...currentQ,
+          userAnswer: answer,
+          isCorrect,
+          attempts: currentQ.attempts + 1,
+          pointsEarned: scoreCalc.totalPoints,
+          comboMultiplier,
+        };
+
+        // Mettre à jour les questions
+        const updatedQuestions = [...currentSession.questions];
+        updatedQuestions[currentSession.currentQuestionIndex] = updatedQuestion;
+
+        // IMPORTANT: Le score s'accumule (currentSession.score + nouveaux points)
+        // Il ne revient JAMAIS à 0 entre les questions
+        const newSession = {
+          ...currentSession,
+          questions: updatedQuestions,
+          score: currentSession.score + scoreCalc.totalPoints, // Accumulation du score
+          combo: newCombo, // Combo actuel (série en cours)
+          maxCombo: Math.max(currentSession.maxCombo, newCombo), // Meilleure série
+        };
+
+        // Ajouter les points au total utilisateur si correct
+        if (isCorrect) {
+          addPoints(scoreCalc.totalPoints);
+        }
+
+        return newSession;
       });
 
-      // Ajouter les points au total utilisateur si correct
-      if (isCorrect) {
-        addPoints(scoreCalc.totalPoints);
-      }
-
-      return isCorrect;
+      return resultIsCorrect;
     },
-    [session, currentQuestion, addPoints]
+    [addPoints]
   );
 
   // Terminer la partie
@@ -164,20 +175,24 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
 
   // Passer à la question suivante
   const nextQuestion = useCallback(() => {
-    if (!session) return;
+    setSession((currentSession) => {
+      if (!currentSession) return currentSession;
 
-    const nextIndex = session.currentQuestionIndex + 1;
+      const nextIndex = currentSession.currentQuestionIndex + 1;
 
-    if (nextIndex >= session.questions.length) {
-      // Fin du jeu
-      endGame();
-    } else {
-      setSession({
-        ...session,
+      // Si on a atteint la fin, on ne change rien (endGame sera appelé depuis GamePage)
+      if (nextIndex >= currentSession.questions.length) {
+        return currentSession;
+      }
+
+      // IMPORTANT: Utiliser currentSession (la valeur la plus récente)
+      // au lieu de session (qui peut être obsolète à cause des closures)
+      return {
+        ...currentSession,
         currentQuestionIndex: nextIndex,
-      });
-    }
-  }, [session, endGame]);
+      };
+    });
+  }, []);
 
   // Mettre en pause
   const pauseGame = useCallback(() => {

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useRef } from 'react';
 import styles from './Timer.module.css';
 
 interface TimerProps {
@@ -9,24 +9,25 @@ interface TimerProps {
 
 export const Timer: FC<TimerProps> = ({ totalTime, isActive, onTimeUp }) => {
   const [timeRemaining, setTimeRemaining] = useState(totalTime);
+  const hasCalledTimeUp = useRef(false);
 
   useEffect(() => {
     setTimeRemaining(totalTime);
+    hasCalledTimeUp.current = false;
   }, [totalTime]);
 
   useEffect(() => {
     if (!isActive) return;
 
-    if (timeRemaining <= 0) {
-      onTimeUp();
-      return;
-    }
-
     const interval = setInterval(() => {
       setTimeRemaining((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
-          onTimeUp();
+          // Appeler onTimeUp de manière asynchrone pour éviter le setState pendant render
+          if (!hasCalledTimeUp.current) {
+            hasCalledTimeUp.current = true;
+            setTimeout(() => onTimeUp(), 0);
+          }
           return 0;
         }
         return prev - 1;
@@ -34,7 +35,7 @@ export const Timer: FC<TimerProps> = ({ totalTime, isActive, onTimeUp }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isActive, timeRemaining, onTimeUp]);
+  }, [isActive, onTimeUp]);
 
   const percentage = (timeRemaining / totalTime) * 100;
   

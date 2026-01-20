@@ -25,20 +25,30 @@ export const GamePage: FC = () => {
   // Définir les handlers avant le early return
   const handleAnswer = useCallback(
     (answer: number) => {
-      if (isProcessing) return;
+      if (isProcessing || !session) return;
       
       setIsProcessing(true);
       const isCorrect = answerQuestion(answer);
       setFeedback(isCorrect ? 'correct' : 'incorrect');
 
+      // Vérifier si c'était la dernière question
+      const isLastQuestion = session.currentQuestionIndex >= session.questions.length - 1;
+
       // Attendre un peu pour afficher le feedback avant de passer à la suite
       setTimeout(() => {
         setFeedback(null);
         setIsProcessing(false);
-        nextQuestion();
+        
+        if (isLastQuestion) {
+          // Si c'était la dernière question, terminer le jeu
+          endGame();
+        } else {
+          // Sinon, passer à la question suivante
+          nextQuestion();
+        }
       }, 1500);
     },
-    [answerQuestion, nextQuestion, isProcessing]
+    [answerQuestion, nextQuestion, endGame, isProcessing, session]
   );
 
   const handleTimeUp = useCallback(() => {
@@ -61,16 +71,18 @@ export const GamePage: FC = () => {
 
   // Détecter la fin de partie
   useEffect(() => {
-    if (session && session.endTime) {
+    if (session && session.endTime && !gameEnded) {
       setGameEnded(true);
     }
-  }, [session]);
+  }, [session, gameEnded]);
 
   const handlePlayAgain = () => {
     if (lastGameConfig) {
+      // Important : reset l'état local AVANT de démarrer une nouvelle partie
       setGameEnded(false);
       setFeedback(null);
       setIsProcessing(false);
+      setLastGameConfig(null); // Reset pour capturer la nouvelle config
       startGame(lastGameConfig);
     }
   };
