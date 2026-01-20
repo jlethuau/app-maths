@@ -1,4 +1,4 @@
-import { FC, useState, useCallback } from 'react';
+import { FC, useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '@/components/layout/Container';
 import { Card } from '@/components/ui/Card';
@@ -7,16 +7,20 @@ import { QuestionCard } from '@/features/game/components/QuestionCard';
 import { AnswerInput } from '@/features/game/components/AnswerInput';
 import { Timer } from '@/features/game/components/Timer';
 import { ScoreDisplay } from '@/features/game/components/ScoreDisplay';
+import { GameEndScreen } from '@/features/game/components/GameEndScreen';
 import { useGame } from '@/context/GameContext';
+import { GameConfig } from '@/types';
 import styles from './GamePage.module.css';
 
 export const GamePage: FC = () => {
   const navigate = useNavigate();
-  const { session, currentQuestion, isGameActive, answerQuestion, nextQuestion, endGame } =
+  const { session, currentQuestion, isGameActive, answerQuestion, nextQuestion, endGame, startGame } =
     useGame();
   
   const [feedback, setFeedback] = useState<'correct' | 'incorrect' | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [gameEnded, setGameEnded] = useState(false);
+  const [lastGameConfig, setLastGameConfig] = useState<GameConfig | null>(null);
 
   // Définir les handlers avant le early return
   const handleAnswer = useCallback(
@@ -41,6 +45,35 @@ export const GamePage: FC = () => {
     // Temps écoulé = mauvaise réponse
     handleAnswer(-9999); // Réponse impossible pour forcer incorrect
   }, [handleAnswer]);
+
+  // Sauvegarder la config au démarrage de la session
+  useEffect(() => {
+    if (session && !lastGameConfig) {
+      const config: GameConfig = {
+        mode: session.mode,
+        selectedTables: session.selectedTables,
+        timePerQuestion: session.timePerQuestion,
+        numberOfQuestions: session.questions.length,
+      };
+      setLastGameConfig(config);
+    }
+  }, [session, lastGameConfig]);
+
+  // Détecter la fin de partie
+  useEffect(() => {
+    if (session && session.endTime) {
+      setGameEnded(true);
+    }
+  }, [session]);
+
+  const handlePlayAgain = () => {
+    if (lastGameConfig) {
+      setGameEnded(false);
+      setFeedback(null);
+      setIsProcessing(false);
+      startGame(lastGameConfig);
+    }
+  };
 
   // Si pas de session, retourner à l'accueil
   if (!session || !currentQuestion) {
@@ -69,6 +102,11 @@ export const GamePage: FC = () => {
   const questionNumber = session.currentQuestionIndex + 1;
   const totalQuestions = session.questions.length;
 
+  // Afficher l'écran de fin si la partie est terminée
+  if (gameEnded && session) {
+    return <GameEndScreen session={session} onPlayAgain={handlePlayAgain} />;
+  }
+
   return (
     <div className={styles.page}>
       <Container maxWidth="md">
@@ -85,12 +123,15 @@ export const GamePage: FC = () => {
             </Button>
           </div>
 
-          {/* Timer */}
-          <Timer
-            totalTime={session.timePerQuestion}
-            isActive={isGameActive && !isProcessing}
-            onTimeUp={handleTimeUp}
-          />
+          {/* Timer (seulement si temps limité) */}
+          {session.timePerQuestion !== Infinity && (
+            <Timer
+              totalTime={session.timePerQuestion}
+              isActive={isGameActive && !isProcessing}
+              onTimeUp={handleTimeUp}
+              key={session.currentQuestionIndex} // Reset le timer à chaque question
+            />
+          )}
 
           {/* Question */}
           <div className={styles.questionSection}>

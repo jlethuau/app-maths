@@ -13,7 +13,8 @@ export const GAME_CONSTANTS = {
 
   // Temps
   DEFAULT_TIME_PER_QUESTION: 10, // secondes
-  TIME_OPTIONS: [5, 10, 15, 30] as const,
+  TIME_OPTIONS: [5, 10, 15, Infinity] as const,
+  TIME_INFINITE: Infinity,
 
   // Scoring
   BASE_POINTS_PER_QUESTION: 10,

@@ -123,13 +123,15 @@ export const HomePage: FC = () => {
                     timePerQuestion === time ? styles.timeButtonSelected : ''
                   }`}
                 >
-                  {time}s
+                  {time === Infinity ? '∞' : `${time}s`}
                 </button>
               ))}
             </div>
 
             <p className={styles.timeHint}>
-              {timePerQuestion <= 10 
+              {timePerQuestion === Infinity
+                ? '♾️ Pas de limite de temps - Prends ton temps !'
+                : timePerQuestion <= 10 
                 ? '⚡ Rapide ! Plus de points si tu réponds vite'
                 : '🎯 Prends ton temps pour réfléchir'}
             </p>

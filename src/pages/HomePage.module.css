@@ -91,7 +91,7 @@
   font-family: var(--font-family);
 }
 
-.tableButton:hover {
+.tableButton:hover:not(.tableButtonSelected) {
   transform: translateY(-2px);
   border-color: var(--color-primary);
   background: var(--color-bg-card);
@@ -99,6 +99,17 @@
 
 .tableButton:active {
   transform: translateY(0);
+}
+
+/* Supprimer le outline par défaut sur ces boutons */
+.tableButton:focus {
+  outline: none;
+}
+
+/* Focus visible avec ring pour accessibilité */
+.tableButton:focus-visible:not(.tableButtonSelected) {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: 2px;
 }
 
 .tableNumber {
@@ -111,11 +122,18 @@
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   border-color: var(--color-primary-light);
   box-shadow: var(--shadow-primary-glow);
+  transform: translateY(-2px);
 }
 
 .tableButtonSelected .tableNumber {
   color: var(--color-text-primary);
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Focus visible sur bouton sélectionné */
+.tableButtonSelected:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
 }
 
 .quickActions {
@@ -149,10 +167,21 @@
   transition: all var(--transition-base);
 }
 
-.timeButton:hover {
+.timeButton:hover:not(.timeButtonSelected) {
   border-color: var(--color-accent);
   background: var(--color-bg-card);
   transform: translateY(-2px);
+}
+
+/* Supprimer le outline par défaut */
+.timeButton:focus {
+  outline: none;
+}
+
+/* Focus visible pour accessibilité */
+.timeButton:focus-visible:not(.timeButtonSelected) {
+  outline: 2px solid var(--color-accent-light);
+  outline-offset: 2px;
 }
 
 .timeButtonSelected {
@@ -160,6 +189,13 @@
   border-color: var(--color-accent-light);
   color: var(--color-text-primary);
   box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Focus visible sur bouton sélectionné */
+.timeButtonSelected:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
 }
 
 .timeHint {
