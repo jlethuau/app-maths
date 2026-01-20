@@ -6,6 +6,38 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 ---
 
+## [0.2.1] - 2026-01-20
+
+### 🐛 Corrections Critiques - Application Stable
+
+#### Fixed
+- **BUG CRITIQUE** : Compteurs (score, combo, meilleure série) qui redescendaient à 0 à chaque nouvelle question
+  - Cause : Closures React - les callbacks utilisaient des versions obsolètes de l'état `session`
+  - Solution : Utilisation de `setSession(currentSession => ...)` au lieu de `setSession({ ...session })`
+  - Impact : `answerQuestion` et `nextQuestion` utilisent maintenant la forme fonctionnelle
+  
+- **BUG CRITIQUE** : Écran de fin de partie affichant tous les compteurs à 0
+  - Cause : Même problème de closure + timing incorrect de `endGame()`
+  - Solution : Détection explicite de la dernière question dans `handleAnswer` avec gestion correcte du timing
+  
+- **BUG** : Warning React "Cannot update component while rendering different component"
+  - Cause : Timer appelait `onTimeUp()` de manière synchrone dans `setTimeRemaining()`, modifiant l'état de GamePage pendant le render de Timer
+  - Solution : Appel asynchrone avec `setTimeout(() => onTimeUp(), 0)` + `useRef` pour éviter appels multiples
+  
+#### Changed
+- **GameContext.answerQuestion** : Refactorisé pour utiliser `setSession` avec fonction de mise à jour
+- **GameContext.nextQuestion** : Refactorisé pour utiliser `setSession` avec fonction de mise à jour
+- **Timer.onTimeUp** : Appel différé pour respecter les règles de React
+- **GamePage.handleAnswer** : Détection explicite si dernière question avant appel de `endGame()`
+
+#### Technical
+- TypeScript : 0 erreur ✅
+- ESLint : 0 warning ✅
+- Tests manuels : Validés par l'utilisateur ✅
+- Stabilité : Production-ready ✅
+
+---
+
 ## [0.2.0] - 2026-01-20
 
 ### 🎮 Sprint 1 - Core Game MVP COMPLET
@@ -42,8 +74,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 - **UX/UI**
   - Sélection multi-tables (1-10)
-  - Choix du temps par question (5s, 10s, 15s, 30s)
-  - Animations fluides (slide, bounce, shake, pulse)
+  - Choix du temps par question (5s, 10s, 15s, Infini)
+  - Timer reset automatique à chaque question
+  - Écran de fin de partie animé avec option "Rejouer"
+  - Styles focus/selected optimisés pour boutons de paramétrage
+  - Animations fluides (slide, bounce, shake, pulse, confetti)
   - Thème sombre avec dégradés violet/rose
   - Design mobile-first responsive
   - Accessibilité (ARIA, navigation clavier)
