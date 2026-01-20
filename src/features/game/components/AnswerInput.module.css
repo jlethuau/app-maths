@@ -1,0 +1,65 @@
+/* AnswerInput Component Styles */
+
+.answerForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  width: 100%;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: var(--spacing-5) var(--spacing-6);
+  
+  font-family: var(--font-family);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+  color: var(--color-text-primary);
+  
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-xl);
+  
+  transition: all var(--transition-base);
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2), var(--shadow-primary-glow);
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-normal);
+}
+
+/* Retire les flèches sur input number */
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* === RESPONSIVE === */
+
+@media (min-width: 640px) {
+  .input {
+    font-size: var(--font-size-4xl);
+    padding: var(--spacing-6) var(--spacing-8);
+  }
+}

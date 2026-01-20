@@ -1,0 +1,128 @@
+/* ScoreDisplay Component Styles */
+
+.scoreContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-6);
+  padding: var(--spacing-4);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-xl);
+  backdrop-filter: blur(10px);
+}
+
+.scoreSection {
+  flex: 1;
+  text-align: center;
+}
+
+.label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--spacing-1);
+}
+
+.score {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-extrabold);
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+/* Combo Section */
+.comboSection {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-4);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--border-radius-lg);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all var(--transition-base);
+}
+
+.comboActive {
+  opacity: 1;
+  transform: scale(1);
+  animation: comboPulse 0.6s ease-in-out;
+}
+
+.comboLabel {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-extrabold);
+  text-shadow: 0 0 10px currentColor;
+}
+
+.comboIcon {
+  font-size: var(--font-size-xl);
+  animation: float 1s ease-in-out infinite;
+}
+
+/* Max Combo */
+.maxComboSection {
+  text-align: center;
+  padding-left: var(--spacing-4);
+  border-left: 1px solid var(--color-border);
+}
+
+.maxCombo {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-light);
+}
+
+/* === ANIMATIONS === */
+
+@keyframes comboPulse {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* === RESPONSIVE === */
+
+@media (min-width: 640px) {
+  .scoreContainer {
+    padding: var(--spacing-6);
+  }
+  
+  .score {
+    font-size: var(--font-size-4xl);
+  }
+  
+  .comboLabel {
+    font-size: var(--font-size-xl);
+  }
+  
+  .comboIcon {
+    font-size: var(--font-size-2xl);
+  }
+}

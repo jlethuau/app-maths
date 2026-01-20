@@ -1,0 +1,78 @@
+/* QuestionCard Component Styles */
+
+.questionCard {
+  text-align: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.questionNumber {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--spacing-4);
+}
+
+.question {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+.operand {
+  font-size: var(--font-size-5xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+  text-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
+}
+
+.operator {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-light);
+}
+
+.equals {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-secondary-light);
+}
+
+.answer {
+  font-size: var(--font-size-6xl);
+  font-weight: var(--font-weight-extrabold);
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* === RESPONSIVE === */
+
+@media (min-width: 640px) {
+  .question {
+    gap: var(--spacing-6);
+  }
+  
+  .operand {
+    font-size: var(--font-size-6xl);
+  }
+  
+  .operator,
+  .equals {
+    font-size: var(--font-size-5xl);
+  }
+}

@@ -1,0 +1,82 @@
+/* Timer Component Styles */
+
+.timerContainer {
+  width: 100%;
+}
+
+.timerLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.time {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  transition: all var(--transition-fast);
+}
+
+.timeLow {
+  color: var(--color-error);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.progressBar {
+  width: 100%;
+  height: 12px;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--border-radius-full);
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: var(--border-radius-full);
+  transition: width 1s linear, background-color var(--transition-base);
+  box-shadow: 0 0 10px currentColor;
+}
+
+.progressLow {
+  animation: progressPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes progressPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* === RESPONSIVE === */
+
+@media (min-width: 640px) {
+  .progressBar {
+    height: 16px;
+  }
+  
+  .timerLabel {
+    font-size: var(--font-size-base);
+  }
+  
+  .time {
+    font-size: var(--font-size-xl);
+  }
+}
