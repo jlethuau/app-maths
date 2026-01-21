@@ -5,31 +5,66 @@ import { GAME_CONSTANTS } from '@/constants/game';
  * Génère une question de multiplication aléatoire
  * 
  * @param tables - Numéros des tables à utiliser (ex: [2, 3, 5])
+ * @param excludeQuestions - Questions à exclure pour éviter les doublons (optionnel)
  * @returns Question avec opérandes et réponse correcte
  * 
  * @example
  * ```ts
  * const question = generateQuestion([2, 3, 5]);
  * // Peut retourner: { operand1: 3, operand2: 7, correctAnswer: 21, ... }
+ * // operand1 = table sélectionnée, operand2 = 1 à 10
  * ```
  */
-export function generateQuestion(tables: number[]): Question {
-  // Sélectionne une table aléatoire parmi celles choisies
+export function generateQuestion(
+  tables: number[],
+  excludeQuestions: Question[] = []
+): Question {
+  const maxAttempts = 100; // Éviter une boucle infinie
+  let attempts = 0;
+  
+  while (attempts < maxAttempts) {
+    // Sélectionne une table aléatoire parmi celles choisies
+    const table = tables[Math.floor(Math.random() * tables.length)];
+    
+    // Génère un multiplicateur aléatoire entre 1 et 10 (toute la table)
+    const multiplier = Math.floor(Math.random() * 10) + 1;
+    
+    // Mélange aléatoirement l'ordre (7×3 ou 3×7)
+    const [operand1, operand2] = Math.random() > 0.5 
+      ? [table, multiplier] 
+      : [multiplier, table];
+    
+    // Vérifier si cette question existe déjà
+    const isDuplicate = excludeQuestions.some(
+      (q) => 
+        (q.operand1 === operand1 && q.operand2 === operand2) ||
+        (q.operand1 === operand2 && q.operand2 === operand1)
+    );
+    
+    if (!isDuplicate) {
+      return {
+        id: `q-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        operand1,
+        operand2,
+        correctAnswer: operand1 * operand2,
+        attempts: 0,
+        pointsEarned: 0,
+        comboMultiplier: 1,
+      };
+    }
+    
+    attempts++;
+  }
+  
+  // Si on ne trouve pas de question unique après maxAttempts, retourner quand même une question
   const table = tables[Math.floor(Math.random() * tables.length)];
-  
-  // Génère un multiplicateur aléatoire entre 1 et 10
   const multiplier = Math.floor(Math.random() * 10) + 1;
-  
-  // Mélange aléatoirement l'ordre (7×3 ou 3×7)
-  const [operand1, operand2] = Math.random() > 0.5 
-    ? [table, multiplier] 
-    : [multiplier, table];
   
   return {
     id: `q-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-    operand1,
-    operand2,
-    correctAnswer: operand1 * operand2,
+    operand1: table,
+    operand2: multiplier,
+    correctAnswer: table * multiplier,
     attempts: 0,
     pointsEarned: 0,
     comboMultiplier: 1,
@@ -141,16 +176,19 @@ export function getComboColor(combo: number): string {
 
 /**
  * Génère un tableau de questions pour une session de jeu
+ * Évite les doublons et s'assure que deux questions consécutives ne sont pas identiques
  * 
  * @param tables - Tables à utiliser
  * @param count - Nombre de questions à générer
- * @returns Tableau de questions
+ * @returns Tableau de questions uniques
  */
 export function generateQuestions(tables: number[], count: number): Question[] {
   const questions: Question[] = [];
   
   for (let i = 0; i < count; i++) {
-    questions.push(generateQuestion(tables));
+    // Générer une question en excluant les questions déjà générées
+    const newQuestion = generateQuestion(tables, questions);
+    questions.push(newQuestion);
   }
   
   return questions;

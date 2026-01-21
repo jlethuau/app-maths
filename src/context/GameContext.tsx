@@ -133,45 +133,52 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
 
   // Terminer la partie
   const endGame = useCallback((): GameSession | null => {
-    if (!session) return null;
+    // Utiliser une variable pour capturer la session terminée
+    let finalSession: GameSession | null = null;
 
-    const endedSession: GameSession = {
-      ...session,
-      endTime: new Date(),
-    };
+    setSession((currentSession) => {
+      if (!currentSession) return currentSession;
 
-    // Calculer les statistiques
-    const correctAnswers = session.questions.filter((q) => q.isCorrect).length;
-    const totalQuestions = session.questions.length;
-    const accuracy = Math.round((correctAnswers / totalQuestions) * 100);
+      const endedSession: GameSession = {
+        ...currentSession,
+        endTime: new Date(),
+      };
 
-    // Mettre à jour les statistiques globales
-    updateProgress({
-      statistics: {
-        ...userProgress.statistics,
-        totalGamesPlayed: userProgress.statistics.totalGamesPlayed + 1,
-        totalQuestionsAnswered:
-          userProgress.statistics.totalQuestionsAnswered + totalQuestions,
-        totalCorrectAnswers:
-          userProgress.statistics.totalCorrectAnswers + correctAnswers,
-        averageAccuracy: Math.round(
-          ((userProgress.statistics.averageAccuracy *
-            userProgress.statistics.totalGamesPlayed +
-            accuracy) /
-            (userProgress.statistics.totalGamesPlayed + 1))
-        ),
-        highestCombo: Math.max(
-          userProgress.statistics.highestCombo,
-          session.maxCombo
-        ),
-      },
+      // Calculer les statistiques avec la session la plus récente
+      const correctAnswers = currentSession.questions.filter((q) => q.isCorrect).length;
+      const totalQuestions = currentSession.questions.length;
+      const accuracy = Math.round((correctAnswers / totalQuestions) * 100);
+
+      // Mettre à jour les statistiques globales
+      updateProgress({
+        statistics: {
+          ...userProgress.statistics,
+          totalGamesPlayed: userProgress.statistics.totalGamesPlayed + 1,
+          totalQuestionsAnswered:
+            userProgress.statistics.totalQuestionsAnswered + totalQuestions,
+          totalCorrectAnswers:
+            userProgress.statistics.totalCorrectAnswers + correctAnswers,
+          averageAccuracy: Math.round(
+            ((userProgress.statistics.averageAccuracy *
+              userProgress.statistics.totalGamesPlayed +
+              accuracy) /
+              (userProgress.statistics.totalGamesPlayed + 1))
+          ),
+          highestCombo: Math.max(
+            userProgress.statistics.highestCombo,
+            currentSession.maxCombo
+          ),
+        },
+      });
+
+      finalSession = endedSession;
+      return endedSession;
     });
 
     setIsGameActive(false);
-    setSession(endedSession);
 
-    return endedSession;
-  }, [session, updateProgress, userProgress.statistics]);
+    return finalSession;
+  }, [updateProgress, userProgress.statistics]);
 
   // Passer à la question suivante
   const nextQuestion = useCallback(() => {
