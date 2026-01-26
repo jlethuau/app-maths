@@ -6,6 +6,93 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 ---
 
+## [0.6.0] - 2026-01-26
+
+### 📊 Statistiques par Table de Multiplication
+
+#### Added
+- **Suivi détaillé par table** : système complet de statistiques pour chaque table (2-10)
+- **Niveaux de maîtrise** : 3 niveaux automatiques (Débutant ⚠️, En progression 📈, Très fort 🌟)
+- **Calcul intelligent** : combine taux de réussite, temps moyen et erreurs consécutives
+- **Affichage visuel** : section "Mes tables" dans SettingsPage avec stats détaillées
+- **Badges visuels** : émojis sur les boutons de tables pour identifier rapidement le niveau
+- **Mise en avant lacunes** : bordure rouge sur tables à réviser (<50% réussite)
+- **Tests unitaires** : 11 tests pour garantir fiabilité du système
+
+#### Changed
+- **SettingsPage** : ajout section statistiques avec niveau, précision et nombre de questions par table
+- **GameContext** : calcul automatique des stats à la fin de chaque partie
+- **Types** : extension TableStatistics avec consecutiveErrors, maxConsecutiveErrors et level
+
+#### Technical
+- Fonction `calculateTableLevel()` : détermine niveau basé sur accuracy (>80%), temps (<5s) et erreurs (<2)
+- Fonction `updateTableStats()` : met à jour stats d'une table question par question
+- Fonction `processSessionTableStats()` : traite toutes les questions d'une session
+- Fonction `getTableLevelInfo()` : retourne label, emoji, couleur et description par niveau
+- Persistance automatique dans localStorage via AppContext
+- Tests complets (11 tests passants)
+
+#### Critères de Niveau
+- **Débutant** : <50% réussite OU temps >8s OU >3 erreurs consécutives
+- **En progression** : 50-80% réussite ET temps 5-8s
+- **Très fort** : >80% réussite ET temps <5s ET <2 erreurs max consécutives
+
+#### Files Added
+- `src/utils/tableStatsUtils.ts` : utilitaires de calcul des stats par table
+- `src/utils/tableStatsUtils.test.ts` : tests unitaires
+
+#### Files Modified
+- `src/types/index.ts` : extension TableStatistics et ajout TableLevel
+- `src/context/GameContext.tsx` : calcul stats par table dans endGame()
+- `src/pages/SettingsPage.tsx` : affichage stats et badges visuels
+- `src/pages/SettingsPage.module.css` : styles pour stats et badges
+
+---
+
+## [0.5.0] - 2026-01-26
+
+### ✨ Animations CSS Aléatoires
+
+#### Added
+- **Système d'animations aléatoires** : nouveau système pour rendre les animations plus dynamiques et imprévisibles
+- **Utilitaire animationUtils.ts** : bibliothèque complète de fonctions pour générer des animations aléatoires
+- **Nouvelles animations CSS** : randomWiggle, randomBounce, randomPulseGlow, chaoticFloat
+- **Variables CSS personnalisées** : support des variables CSS pour contrôler les animations de manière aléatoire
+- **Particules flottantes** : ajout de particules animées en arrière-plan de NewHomePage
+- **Tests unitaires** : 30 tests pour garantir le bon fonctionnement des utilitaires
+- **Documentation** : guide complet RANDOM-ANIMATIONS.md avec exemples et bonnes pratiques
+
+#### Changed
+- **GameEndScreen** : utilisation de randomConfettiStyle() pour des confettis plus variés
+- **BadgesPage** : animations d'apparition décalées avec randomPopInStyle()
+- **ScoreDisplay** : animations de combo dynamiques avec effets de lueur et de mouvement aléatoires
+- **NewHomePage** : ajout de 20 particules flottantes avec mouvement chaotique
+- **animations.css** : amélioration des keyframes pour supporter les variables CSS aléatoires
+
+#### Technical
+- Fonctions utilitaires : randomDuration, randomDelay, randomRotation, randomScale, randomX, randomY, randomChoice
+- Générateurs de styles : randomConfettiStyle, randomFloatStyle, randomBounceStyle, randomFadeInStyle, randomPopInStyle, randomSparkleStyle, randomParticleStyle
+- Générateurs de variables CSS : randomWiggleVars, randomBounceVars, randomGlowVars, randomChaoticFloatVars, randomParticleVars
+- Helper : generateRandomElements pour créer facilement des collections d'éléments animés
+- Performance : utilisation de transform et opacity pour accélération GPU
+- Tests : coverage complet avec vitest (30 tests passants)
+
+#### Files Added
+- `src/utils/animationUtils.ts` : utilitaires d'animation aléatoire
+- `src/utils/animationUtils.test.ts` : tests unitaires
+- `docs/RANDOM-ANIMATIONS.md` : documentation complète
+
+#### Files Modified
+- `src/styles/animations.css` : nouvelles animations avec support des variables CSS
+- `src/features/game/components/GameEndScreen.tsx` : confettis avec animations aléatoires
+- `src/pages/BadgesPage.tsx` : apparition décalée des badges
+- `src/pages/NewHomePage.tsx` : particules d'arrière-plan
+- `src/pages/NewHomePage.module.css` : styles pour particules
+- `src/features/game/components/ScoreDisplay.tsx` : animations dynamiques du combo
+- `src/features/game/components/ScoreDisplay.module.css` : support des nouvelles animations
+
+---
+
 ## [0.4.1] - 2026-01-26
 
 ### 🎯 Optimisation Mobile

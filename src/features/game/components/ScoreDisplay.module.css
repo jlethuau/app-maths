@@ -55,7 +55,7 @@
 }
 
 .comboActive {
-  animation: comboPulse 0.6s ease-in-out;
+  animation: randomWiggle ease-in-out infinite, randomPulseGlow ease-in-out infinite;
 }
 
 .comboActive .comboNumber {
@@ -64,7 +64,8 @@
 
 .comboIcon {
   font-size: var(--font-size-xl);
-  animation: float 1s ease-in-out infinite;
+  animation: randomWiggle ease-in-out infinite;
+  display: inline-block;
 }
 
 /* Max Combo (meilleure série) */

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { AppMenu } from '@/components/layout/AppMenu';
 import { ProgressKPI } from '@/components/home/ProgressKPI';
 import { useApp } from '@/context/AppContext';
+import { randomParticleStyle, randomChaoticFloatVars } from '@/utils/animationUtils';
 import styles from './NewHomePage.module.css';
 
 export const NewHomePage: FC = () => {
@@ -19,6 +20,20 @@ export const NewHomePage: FC = () => {
 
   return (
     <div className={styles.page}>
+      {/* Particules flottantes animées de manière aléatoire */}
+      <div className={styles.particles}>
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div
+            key={i}
+            className={styles.particle}
+            style={{
+              ...randomParticleStyle(),
+              ...randomChaoticFloatVars(),
+            }}
+          />
+        ))}
+      </div>
+
       <Container maxWidth="md">
         <div className={styles.content}>
           {/* Header avec menu */}

@@ -1,0 +1,217 @@
+/* Random Animations Demo Styles */
+
+.demo {
+  min-height: 100vh;
+  padding: var(--spacing-4);
+  background: var(--color-bg-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.title {
+  text-align: center;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-extrabold);
+  margin-bottom: var(--spacing-6);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  position: relative;
+  z-index: 1;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-4);
+  color: var(--color-text-primary);
+}
+
+/* Contrôles */
+.controls {
+  display: flex;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+}
+
+/* Particules */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: chaoticFloat infinite ease-in-out;
+  opacity: 0.4;
+  filter: blur(1px);
+}
+
+/* Confettis */
+.confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.confettiPiece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  animation: confetti-fall linear forwards;
+}
+
+/* Demo boxes */
+.demoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: var(--spacing-4);
+}
+
+.demoBox {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-accent) 100%);
+  border-radius: var(--border-radius-xl);
+  color: white;
+  box-shadow: var(--shadow-lg);
+}
+
+.wiggle {
+  animation: randomWiggle ease-in-out infinite;
+}
+
+.bounce {
+  animation: randomBounce ease-in-out infinite;
+}
+
+.glow {
+  animation: randomPulseGlow ease-in-out infinite;
+}
+
+/* Badges */
+.badgeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-3);
+}
+
+.badge {
+  padding: var(--spacing-4);
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-2);
+  animation: popIn cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  cursor: pointer;
+  transition: transform var(--transition-base);
+}
+
+.badge:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-primary);
+}
+
+.badgeEmoji {
+  font-size: var(--font-size-4xl);
+}
+
+.badgeName {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+/* Chaotic Float */
+.floatContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  justify-content: center;
+  min-height: 200px;
+  position: relative;
+  padding: var(--spacing-6);
+}
+
+.floatBox {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-accent) 100%);
+  border-radius: 50%;
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.chaotic {
+  animation: chaoticFloat ease-in-out infinite;
+}
+
+/* Animations keyframes nécessaires si pas dans globals */
+@keyframes popIn {
+  from {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(var(--random-rotation, 0deg));
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+  .demo {
+    padding: var(--spacing-8);
+  }
+
+  .title {
+    font-size: var(--font-size-5xl);
+  }
+
+  .demoGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .badgeGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .badgeGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}

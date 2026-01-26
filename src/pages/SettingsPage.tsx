@@ -7,15 +7,18 @@ import { useGame } from '@/context/GameContext';
 import { useApp } from '@/context/AppContext';
 import { GameConfig } from '@/types';
 import { GAME_CONSTANTS } from '@/constants/game';
+import { getTableLevelInfo } from '@/utils/tableStatsUtils';
 import styles from './SettingsPage.module.css';
 
 export const SettingsPage: FC = () => {
   const navigate = useNavigate();
   const { startGame } = useGame();
-  const { settings } = useApp();
+  const { settings, userProgress } = useApp();
 
   const [selectedTables, setSelectedTables] = useState<number[]>([2, 3]);
   const [timePerQuestion, setTimePerQuestion] = useState(settings.timePerQuestion);
+  
+  const allTables = Array.from({ length: 10 }, (_, i) => i + 1);
 
   const handleTableToggle = (table: number) => {
     setSelectedTables((prev) =>
@@ -40,8 +43,6 @@ export const SettingsPage: FC = () => {
     navigate('/game');
   };
 
-  const allTables = Array.from({ length: 10 }, (_, i) => i + 1);
-
   return (
     <div className={styles.page}>
       <Container maxWidth="md">
@@ -60,17 +61,25 @@ export const SettingsPage: FC = () => {
             <h2 className={styles.sectionTitle}>Choisis tes tables</h2>
 
             <div className={styles.tableGrid}>
-              {allTables.map((table) => (
-                <button
-                  key={table}
-                  onClick={() => handleTableToggle(table)}
-                  className={`${styles.tableButton} ${
-                    selectedTables.includes(table) ? styles.tableButtonSelected : ''
-                  }`}
-                >
-                  <div className={styles.tableNumber}>{table}</div>
-                </button>
-              ))}
+              {allTables.map((table) => {
+                const stats = userProgress.statistics.tableStats[table];
+                const levelInfo = stats ? getTableLevelInfo(stats.level) : null;
+                
+                return (
+                  <button
+                    key={table}
+                    onClick={() => handleTableToggle(table)}
+                    className={`${styles.tableButton} ${
+                      selectedTables.includes(table) ? styles.tableButtonSelected : ''
+                    }`}
+                  >
+                    <div className={styles.tableNumber}>{table}</div>
+                    {levelInfo && (
+                      <div className={styles.tableBadge}>{levelInfo.emoji}</div>
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             <div className={styles.quickActions}>

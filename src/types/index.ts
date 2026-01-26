@@ -65,10 +65,20 @@ export interface TableStatistics {
   questionsAnswered: number;
   correctAnswers: number;
   accuracy: number;
-  averageTime: number;
+  averageTime: number; // en secondes
   lastPracticed: Date;
-  mastered: boolean; // > 90% de réussite sur 20+ questions
+  consecutiveErrors: number; // Erreurs d'affilée actuelles
+  maxConsecutiveErrors: number; // Max erreurs consécutives
   highestCombo: number;
+  level: 'beginner' | 'progressing' | 'master';
+}
+
+export interface TableLevel {
+  level: 'beginner' | 'progressing' | 'master';
+  label: string;
+  emoji: string;
+  color: string;
+  description: string;
 }
 
 export interface Badge {

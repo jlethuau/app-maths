@@ -125,10 +125,10 @@
 /* Float (animation douce de flottement) */
 @keyframes float {
   0%, 100% {
-    transform: translateY(0px);
+    transform: translateY(0px) rotate(0deg);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(calc(var(--float-distance, -10px))) rotate(var(--float-rotation, 0deg));
   }
 }
 
@@ -148,11 +148,11 @@
 /* Confetti explosion (pour célébrations) */
 @keyframes confetti-fall {
   0% {
-    transform: translateY(-100vh) rotate(0deg);
+    transform: translateY(-100vh) rotate(var(--random-rotation, 0deg));
     opacity: 1;
   }
   100% {
-    transform: translateY(100vh) rotate(720deg);
+    transform: translateY(100vh) rotate(calc(var(--random-rotation, 0deg) + 720deg));
     opacity: 0;
   }
 }
@@ -187,11 +187,25 @@
 
 /* Particle float (pour particules d'arrière-plan) */
 @keyframes float-particles {
-  0%, 100% {
-    background-position: 0% 0%;
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: var(--particle-opacity, 0.5);
+  }
+  25% {
+    transform: translate(var(--particle-x1, 10px), var(--particle-y1, -15px)) rotate(90deg);
+    opacity: var(--particle-opacity, 0.8);
   }
   50% {
-    background-position: 100% 100%;
+    transform: translate(var(--particle-x2, -5px), var(--particle-y2, -25px)) rotate(180deg);
+    opacity: var(--particle-opacity, 0.3);
+  }
+  75% {
+    transform: translate(var(--particle-x3, 15px), var(--particle-y3, -10px)) rotate(270deg);
+    opacity: var(--particle-opacity, 0.6);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+    opacity: var(--particle-opacity, 0.5);
   }
 }
 
@@ -229,15 +243,82 @@
 /* Badge unlock (pour déblocage de badges) */
 @keyframes badgeUnlock {
   0% {
-    transform: scale(0) rotate(-180deg);
+    transform: scale(0) rotate(var(--initial-rotation, -180deg));
     opacity: 0;
   }
   50% {
-    transform: scale(1.2) rotate(10deg);
+    transform: scale(var(--bounce-scale, 1.2)) rotate(var(--bounce-rotation, 10deg));
   }
   100% {
     transform: scale(1) rotate(0deg);
     opacity: 1;
+  }
+}
+
+/* Random wiggle (variation aléatoire) */
+@keyframes randomWiggle {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(var(--wiggle-angle-1, -5deg)) scale(var(--wiggle-scale-1, 1.05));
+  }
+  50% {
+    transform: rotate(var(--wiggle-angle-2, 3deg)) scale(var(--wiggle-scale-2, 0.95));
+  }
+  75% {
+    transform: rotate(var(--wiggle-angle-3, -2deg)) scale(var(--wiggle-scale-3, 1.02));
+  }
+}
+
+/* Random bounce (rebond aléatoire) */
+@keyframes randomBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(var(--bounce-height-1, -20px)) scale(var(--bounce-scale-1, 1.1));
+  }
+  50% {
+    transform: translateY(var(--bounce-height-2, -10px)) scale(var(--bounce-scale-2, 0.95));
+  }
+  75% {
+    transform: translateY(var(--bounce-height-3, -15px)) scale(var(--bounce-scale-3, 1.05));
+  }
+}
+
+/* Random pulse glow */
+@keyframes randomPulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 var(--glow-size-1, 5px) var(--glow-color, var(--color-primary));
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 var(--glow-size-2, 20px) var(--glow-color, var(--color-primary)),
+                0 0 var(--glow-size-3, 30px) var(--glow-color, var(--color-primary));
+    transform: scale(var(--pulse-scale, 1.05));
+  }
+}
+
+/* Chaotic float (flottement chaotique) */
+@keyframes chaoticFloat {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(var(--chaos-x1, 5px), var(--chaos-y1, -8px)) rotate(var(--chaos-rot1, 5deg));
+  }
+  40% {
+    transform: translate(var(--chaos-x2, -3px), var(--chaos-y2, -15px)) rotate(var(--chaos-rot2, -3deg));
+  }
+  60% {
+    transform: translate(var(--chaos-x3, 7px), var(--chaos-y3, -10px)) rotate(var(--chaos-rot3, 7deg));
+  }
+  80% {
+    transform: translate(var(--chaos-x4, -5px), var(--chaos-y4, -5px)) rotate(var(--chaos-rot4, -5deg));
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
   }
 }
 
@@ -301,6 +382,22 @@
 
 .animate-badge-unlock {
   animation: badgeUnlock 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.animate-random-wiggle {
+  animation: randomWiggle 1s ease-in-out infinite;
+}
+
+.animate-random-bounce {
+  animation: randomBounce 1s ease-in-out infinite;
+}
+
+.animate-random-pulse-glow {
+  animation: randomPulseGlow 2s ease-in-out infinite;
+}
+
+.animate-chaotic-float {
+  animation: chaoticFloat 3s ease-in-out infinite;
 }
 
 /* === TRANSITIONS === */

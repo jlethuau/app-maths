@@ -1,5 +1,6 @@
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { getComboColor } from '@/utils/gameUtils';
+import { randomWiggleVars, randomGlowVars } from '@/utils/animationUtils';
 import styles from './ScoreDisplay.module.css';
 
 interface ScoreDisplayProps {
@@ -13,6 +14,23 @@ export const ScoreDisplay: FC<ScoreDisplayProps> = ({
   combo,
   maxCombo,
 }) => {
+  // Générer des styles d'animation aléatoires pour le combo
+  const [comboAnimationStyle, setComboAnimationStyle] = useState<React.CSSProperties>({});
+  const [flameStyle, setFlameStyle] = useState<React.CSSProperties>({});
+
+  useEffect(() => {
+    if (combo >= 2) {
+      setComboAnimationStyle({
+        ...randomWiggleVars(),
+        ...randomGlowVars(),
+      });
+      setFlameStyle(randomWiggleVars());
+    } else {
+      setComboAnimationStyle({});
+      setFlameStyle({});
+    }
+  }, [combo]);
+
   return (
     <div className={styles.scoreContainer}>
       {/* Score principal */}
@@ -26,9 +44,19 @@ export const ScoreDisplay: FC<ScoreDisplayProps> = ({
         <div className={styles.label}>Série en cours</div>
         <div 
           className={`${styles.comboValue} ${combo >= 2 ? styles.comboActive : ''}`}
-          style={{ color: combo >= 2 ? getComboColor(combo) : undefined }}
+          style={{ 
+            color: combo >= 2 ? getComboColor(combo) : undefined,
+            ...comboAnimationStyle,
+          }}
         >
-          {combo > 0 && combo >= 2 && <span className={styles.comboIcon}>🔥</span>}
+          {combo > 0 && combo >= 2 && (
+            <span 
+              className={styles.comboIcon}
+              style={flameStyle}
+            >
+              🔥
+            </span>
+          )}
           <span className={styles.comboNumber}>{combo}</span>
         </div>
       </div>

@@ -13,6 +13,7 @@ import {
   calculateScore,
   getComboMultiplier,
 } from '@/utils/gameUtils';
+import { processSessionTableStats } from '@/utils/tableStatsUtils';
 import { GAME_CONSTANTS } from '@/constants/game';
 import { useApp } from './AppContext';
 
@@ -149,6 +150,12 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
       const totalQuestions = currentSession.questions.length;
       const accuracy = Math.round((correctAnswers / totalQuestions) * 100);
 
+      // Mettre à jour les stats par table
+      const updatedTableStats = processSessionTableStats(
+        currentSession,
+        userProgress.statistics.tableStats
+      );
+
       // Mettre à jour les statistiques globales
       updateProgress({
         statistics: {
@@ -168,6 +175,7 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
             userProgress.statistics.highestCombo,
             currentSession.maxCombo
           ),
+          tableStats: updatedTableStats,
         },
       });
 

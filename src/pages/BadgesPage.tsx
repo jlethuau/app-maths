@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { useApp } from '@/context/AppContext';
 import { BADGE_DEFINITIONS } from '@/constants/badges';
+import { randomPopInStyle } from '@/utils/animationUtils';
 import styles from './BadgesPage.module.css';
 
 export const BadgesPage: FC = () => {
@@ -43,7 +44,7 @@ export const BadgesPage: FC = () => {
 
           {/* Liste des badges */}
           <div className={styles.badgesList}>
-            {BADGE_DEFINITIONS.map((badge) => {
+            {BADGE_DEFINITIONS.map((badge, index) => {
               const isUnlocked = unlockedBadgeIds.includes(badge.id);
               return (
                 <Card
@@ -51,6 +52,7 @@ export const BadgesPage: FC = () => {
                   variant={isUnlocked ? 'default' : 'glass'}
                   padding="md"
                   className={`${styles.badgeCard} ${isUnlocked ? styles.unlocked : styles.locked}`}
+                  style={randomPopInStyle(index)}
                 >
                   <div className={styles.badgeIcon}>{badge.icon}</div>
                   <div className={styles.badgeInfo}>

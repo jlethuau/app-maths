@@ -61,6 +61,64 @@
   text-align: center;
 }
 
+/* Table Statistics */
+.tableStatsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.tableStatItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-3);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  transition: all var(--transition-base);
+}
+
+.tableStatItem:hover {
+  border-color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.tableStatLeft {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.tableStatNumber {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.tableStatLevel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.tableStatRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-1);
+}
+
+.tableStatAccuracy {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-light);
+}
+
+.tableStatQuestions {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
 /* Table Selection */
 .tableGrid {
   display: grid;
@@ -72,8 +130,10 @@
 .tableButton {
   aspect-ratio: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
   
   background: var(--color-bg-tertiary);
   border: 2px solid var(--color-border);
@@ -83,6 +143,13 @@
   transition: all var(--transition-base);
   
   font-family: var(--font-family);
+}
+
+.tableBadge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: var(--font-size-xs);
 }
 
 .tableButton:hover:not(.tableButtonSelected) {

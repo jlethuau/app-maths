@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { GameSession } from '@/types';
 import { calculateAccuracy } from '@/utils/gameUtils';
+import { randomConfettiStyle } from '@/utils/animationUtils';
 import styles from './GameEndScreen.module.css';
 
 interface GameEndScreenProps {
@@ -46,13 +47,7 @@ export const GameEndScreen: FC<GameEndScreenProps> = ({ session, onPlayAgain }) 
               <div
                 key={i}
                 className={styles.confettiPiece}
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  backgroundColor: ['#7c3aed', '#ec4899', '#fbbf24', '#10b981'][
-                    Math.floor(Math.random() * 4)
-                  ],
-                }}
+                style={randomConfettiStyle()}
               />
             ))}
           </div>
