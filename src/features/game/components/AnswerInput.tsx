@@ -1,4 +1,4 @@
-import { FC, FormEvent, useEffect, useRef, useCallback } from 'react';
+import { FC, FormEvent, useCallback } from 'react';
 import { useApp } from '@/context/AppContext';
 import styles from './AnswerInput.module.css';
 
@@ -12,18 +12,10 @@ interface AnswerInputProps {
 export const AnswerInput: FC<AnswerInputProps> = ({
   onSubmit,
   disabled = false,
-  autoFocus = false,
   value,
   onChange,
 }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
   const { settings } = useApp();
-
-  useEffect(() => {
-    if (autoFocus && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [autoFocus]);
 
   const playKeySound = useCallback(() => {
     if (!settings.soundEnabled) return;
