@@ -17,7 +17,7 @@ Application web ludique pour apprendre les tables de multiplication (CE2).
 
 ## ✨ Fonctionnalités
 
-### 🎯 MVP Actuel (v0.2.1)
+### 🎯 Version Actuelle (v0.7.0)
 - ✅ Quiz de multiplication chronométré (5s, 10s, 15s, Infini)
 - ✅ Sélection multi-tables (1-10)
 - ✅ Système de combo (x2, x3, x4) avec multiplicateurs de points
@@ -27,6 +27,9 @@ Application web ludique pour apprendre les tables de multiplication (CE2).
 - ✅ Persistance des données (LocalStorage)
 - ✅ PWA installable sur mobile (Android + iOS)
 - ✅ UI sombre moderne et responsive
+- ✅ Animations CSS aléatoires (confettis, particules, transitions)
+- ✅ Statistiques détaillées par table (niveaux : débutant, en progression, très fort)
+- ✅ Système de badges complet (22 badges : maîtrise, combo, vitesse, précision, assiduité)
 
 ### 🚀 Roadmap (voir [docs/NEXT-STEPS.md](./docs/NEXT-STEPS.md))
 - 🔜 Système de badges et trophées

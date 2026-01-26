@@ -6,6 +6,16 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 ---
 
+## [0.7.0] - 2026-01-26 🚀 VERSION MAJEURE
+
+### 🎉 Résumé de la Version
+Cette version majeure apporte trois fonctionnalités majeures qui transforment l'application en une expérience d'apprentissage complète et motivante :
+- **Animations aléatoires** : interface dynamique et engageante
+- **Statistiques par table** : suivi intelligent des progrès avec 3 niveaux de maîtrise
+- **Système de badges** : 22 badges pour récompenser et motiver l'apprentissage
+
+---
+
 ## [0.7.0] - 2026-01-26
 
 ### 🏆 Système de Badges Complet
