@@ -170,8 +170,9 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
         isCorrect: q.isCorrect || false,
         timeToAnswer: q.timeToAnswer || 0,
       }));
+      const existingLast50 = userProgress.statistics.last50Questions || [];
       const updatedLast50 = [
-        ...userProgress.statistics.last50Questions,
+        ...existingLast50,
         ...newQuestionResults,
       ].slice(-50);
 
@@ -203,9 +204,9 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
           currentSession.maxCombo
         ),
         tableStats: updatedTableStats,
-        fastAnswersCount: userProgress.statistics.fastAnswersCount + fastAnswers,
+        fastAnswersCount: (userProgress.statistics.fastAnswersCount || 0) + fastAnswers,
         last50Questions: updatedLast50,
-        hasPerfectGame: userProgress.statistics.hasPerfectGame || isPerfectGame,
+        hasPerfectGame: (userProgress.statistics.hasPerfectGame || false) || isPerfectGame,
         last50Accuracy,
       };
 
