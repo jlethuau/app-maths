@@ -6,6 +6,51 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 ---
 
+## [0.7.0] - 2026-01-26
+
+### 🏆 Système de Badges Complet
+
+#### Added
+- **Débloquage automatique** : vérification des badges à chaque fin de partie
+- **22 badges** : maîtrise (9), combo (3), vitesse (1), précision (2), assiduité (3), spéciaux (2)
+- **Popup animé** : affichage des nouveaux badges pendant le jeu avec animation
+- **Tracking avancé** : réponses rapides (<2s), historique 50 dernières questions, parties parfaites
+- **Badges de maîtrise** : 90%+ de réussite avec minimum 20 questions par table
+- **Badge "Maître Absolu"** : déblocage quand toutes les tables (2-10) sont maîtrisées
+
+#### Changed
+- **Statistics** : ajout fastAnswersCount, last50Questions, hasPerfectGame, last50Accuracy
+- **GameContext** : calcul et débloquage des badges automatique
+- **GamePage** : affichage popup badges avant de continuer
+
+#### Technical
+- Fonction `checkUnlockedBadges()` : vérifie tous les badges selon critères
+- Fonctions de vérification par type : master_table, combo, speed, accuracy, games_played, score
+- Composant `BadgeUnlockPopup` : popup avec animations (bounce, scaleIn, badgeUnlock)
+- Tracking précis : historique glissant des 50 dernières questions pour badge "Tireur d'élite"
+- Badge "Éclair" : 10 réponses <2s au total (toutes parties confondues)
+
+#### Badge Criteria
+- **Maîtrise table** : 90%+ précision + 20 questions minimum
+- **Combo** : 5, 10 ou 20 bonnes réponses d'affilée
+- **Vitesse** : 10 réponses <2s (total)
+- **Précision** : partie parfaite (100%) ou 95%+ sur 50 questions
+- **Assiduité** : 1, 10 ou 50 parties jouées
+- **Spéciaux** : toutes tables maîtrisées ou 1000 points
+
+#### Files Added
+- `src/utils/badgeUtils.ts` : logique de vérification des badges
+- `src/components/game/BadgeUnlockPopup.tsx` : composant popup
+- `src/components/game/BadgeUnlockPopup.module.css` : styles popup
+
+#### Files Modified
+- `src/types/index.ts` : extension Statistics avec tracking badges
+- `src/context/AppContext.tsx` : initialisation nouveaux champs stats
+- `src/context/GameContext.tsx` : calcul et débloquage badges
+- `src/pages/GamePage.tsx` : affichage popup badges
+
+---
+
 ## [0.6.0] - 2026-01-26
 
 ### 📊 Statistiques par Table de Multiplication

@@ -58,6 +58,16 @@ export interface Statistics {
   tableStats: {
     [key: number]: TableStatistics; // key = 1 à 10
   };
+
+  // Tracking pour badges
+  fastAnswersCount: number; // Nombre de réponses <2s
+  last50Questions: QuestionResult[]; // Historique des 50 dernières questions
+  hasPerfectGame: boolean; // A eu au moins une partie parfaite
+}
+
+export interface QuestionResult {
+  isCorrect: boolean;
+  timeToAnswer: number;
 }
 
 export interface TableStatistics {

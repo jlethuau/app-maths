@@ -8,20 +8,31 @@ import { AnswerInput } from '@/features/game/components/AnswerInput';
 import { Timer } from '@/features/game/components/Timer';
 import { ScoreDisplay } from '@/features/game/components/ScoreDisplay';
 import { GameEndScreen } from '@/features/game/components/GameEndScreen';
+import { BadgeUnlockPopup } from '@/components/game/BadgeUnlockPopup';
 import { useGame } from '@/context/GameContext';
 import { GameConfig } from '@/types';
 import styles from './GamePage.module.css';
 
 export const GamePage: FC = () => {
   const navigate = useNavigate();
-  const { session, currentQuestion, isGameActive, answerQuestion, nextQuestion, endGame, startGame } =
-    useGame();
+  const { 
+    session, 
+    currentQuestion, 
+    isGameActive, 
+    answerQuestion, 
+    nextQuestion, 
+    endGame, 
+    startGame,
+    newBadges,
+    clearNewBadges 
+  } = useGame();
   
   const [feedback, setFeedback] = useState<'correct' | 'incorrect' | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [gameEnded, setGameEnded] = useState(false);
   const [lastGameConfig, setLastGameConfig] = useState<GameConfig | null>(null);
   const [currentAnswer, setCurrentAnswer] = useState('');
+  const [showBadgePopup, setShowBadgePopup] = useState(false);
 
   // Définir les handlers avant le early return
   const handleAnswer = useCallback(
@@ -75,8 +86,18 @@ export const GamePage: FC = () => {
   useEffect(() => {
     if (session && session.endTime && !gameEnded) {
       setGameEnded(true);
+      // Afficher les badges à la fin de partie s'il y en a
+      if (newBadges.length > 0) {
+        setShowBadgePopup(true);
+      }
     }
-  }, [session, gameEnded]);
+  }, [session, gameEnded, newBadges.length]);
+
+  // Handler pour continuer après badges
+  const handleBadgeContinue = useCallback(() => {
+    setShowBadgePopup(false);
+    clearNewBadges();
+  }, [clearNewBadges]);
 
   const handlePlayAgain = () => {
     if (lastGameConfig) {
@@ -116,6 +137,11 @@ export const GamePage: FC = () => {
 
   const questionNumber = session.currentQuestionIndex + 1;
   const totalQuestions = session.questions.length;
+
+  // Afficher popup de badges si nécessaire
+  if (showBadgePopup && newBadges.length > 0) {
+    return <BadgeUnlockPopup badges={newBadges} onContinue={handleBadgeContinue} />;
+  }
 
   // Afficher l'écran de fin si la partie est terminée
   if (gameEnded && session) {

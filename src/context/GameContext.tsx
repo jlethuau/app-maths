@@ -6,7 +6,7 @@ import {
   useState,
   useCallback,
 } from 'react';
-import { GameSession, GameConfig, Question } from '@/types';
+import { GameSession, GameConfig, Question, Badge } from '@/types';
 import {
   generateQuestions,
   validateAnswer,
@@ -14,6 +14,7 @@ import {
   getComboMultiplier,
 } from '@/utils/gameUtils';
 import { processSessionTableStats } from '@/utils/tableStatsUtils';
+import { checkUnlockedBadges } from '@/utils/badgeUtils';
 import { GAME_CONSTANTS } from '@/constants/game';
 import { useApp } from './AppContext';
 
@@ -21,12 +22,14 @@ interface GameContextType {
   session: GameSession | null;
   currentQuestion: Question | null;
   isGameActive: boolean;
+  newBadges: Badge[];
   startGame: (config: GameConfig) => void;
   answerQuestion: (answer: number) => boolean;
   nextQuestion: () => void;
   endGame: () => GameSession | null;
   pauseGame: () => void;
   resumeGame: () => void;
+  clearNewBadges: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -36,9 +39,10 @@ interface GameProviderProps {
 }
 
 export const GameProvider: FC<GameProviderProps> = ({ children }) => {
-  const { addPoints, updateProgress, userProgress } = useApp();
+  const { addPoints, updateProgress, unlockBadge, userProgress } = useApp();
   const [session, setSession] = useState<GameSession | null>(null);
   const [isGameActive, setIsGameActive] = useState(false);
+  const [newBadges, setNewBadges] = useState<Badge[]>([]);
 
   // Question actuelle
   const currentQuestion = session
@@ -156,28 +160,71 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
         userProgress.statistics.tableStats
       );
 
+      // Compter réponses rapides (<2s)
+      const fastAnswers = currentSession.questions.filter(
+        (q) => q.isCorrect && (q.timeToAnswer || 0) < 2
+      ).length;
+
+      // Mettre à jour historique des 50 dernières questions
+      const newQuestionResults = currentSession.questions.map((q) => ({
+        isCorrect: q.isCorrect || false,
+        timeToAnswer: q.timeToAnswer || 0,
+      }));
+      const updatedLast50 = [
+        ...userProgress.statistics.last50Questions,
+        ...newQuestionResults,
+      ].slice(-50);
+
+      // Calcul précision sur 50 dernières questions
+      const last50Correct = updatedLast50.filter((q) => q.isCorrect).length;
+      const last50Accuracy = updatedLast50.length > 0
+        ? Math.round((last50Correct / updatedLast50.length) * 100)
+        : 0;
+
+      // Vérifier si partie parfaite
+      const isPerfectGame = accuracy === 100;
+
       // Mettre à jour les statistiques globales
+      const updatedStats = {
+        ...userProgress.statistics,
+        totalGamesPlayed: userProgress.statistics.totalGamesPlayed + 1,
+        totalQuestionsAnswered:
+          userProgress.statistics.totalQuestionsAnswered + totalQuestions,
+        totalCorrectAnswers:
+          userProgress.statistics.totalCorrectAnswers + correctAnswers,
+        averageAccuracy: Math.round(
+          ((userProgress.statistics.averageAccuracy *
+            userProgress.statistics.totalGamesPlayed +
+            accuracy) /
+            (userProgress.statistics.totalGamesPlayed + 1))
+        ),
+        highestCombo: Math.max(
+          userProgress.statistics.highestCombo,
+          currentSession.maxCombo
+        ),
+        tableStats: updatedTableStats,
+        fastAnswersCount: userProgress.statistics.fastAnswersCount + fastAnswers,
+        last50Questions: updatedLast50,
+        hasPerfectGame: userProgress.statistics.hasPerfectGame || isPerfectGame,
+        last50Accuracy,
+      };
+
       updateProgress({
-        statistics: {
-          ...userProgress.statistics,
-          totalGamesPlayed: userProgress.statistics.totalGamesPlayed + 1,
-          totalQuestionsAnswered:
-            userProgress.statistics.totalQuestionsAnswered + totalQuestions,
-          totalCorrectAnswers:
-            userProgress.statistics.totalCorrectAnswers + correctAnswers,
-          averageAccuracy: Math.round(
-            ((userProgress.statistics.averageAccuracy *
-              userProgress.statistics.totalGamesPlayed +
-              accuracy) /
-              (userProgress.statistics.totalGamesPlayed + 1))
-          ),
-          highestCombo: Math.max(
-            userProgress.statistics.highestCombo,
-            currentSession.maxCombo
-          ),
-          tableStats: updatedTableStats,
-        },
+        statistics: updatedStats,
       });
+
+      // Vérifier les nouveaux badges
+      const unlockedBadges = checkUnlockedBadges(
+        { ...userProgress, statistics: updatedStats }
+      );
+
+      // Débloquer les badges
+      unlockedBadges.forEach((badge) => unlockBadge(badge));
+      
+      // Stocker les nouveaux badges pour l'affichage
+      if (unlockedBadges.length > 0) {
+        setNewBadges(unlockedBadges);
+      }
 
       finalSession = endedSession;
       return endedSession;
@@ -221,16 +268,23 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
     }
   }, [session]);
 
+  // Effacer les nouveaux badges après affichage
+  const clearNewBadges = useCallback(() => {
+    setNewBadges([]);
+  }, []);
+
   const value: GameContextType = {
     session,
     currentQuestion,
     isGameActive,
+    newBadges,
     startGame,
     answerQuestion,
     nextQuestion,
     endGame,
     pauseGame,
     resumeGame,
+    clearNewBadges,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
