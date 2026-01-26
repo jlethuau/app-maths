@@ -233,14 +233,14 @@ export const BADGE_DEFINITIONS: Omit<Badge, 'unlockedAt' | 'progress'>[] = [
     },
   },
   {
-    id: 'score_1000',
+    id: 'score_10000',
     name: 'Millionnaire',
-    description: 'Atteins 1000 points totaux',
+    description: 'Atteins 10 000 points totaux',
     icon: '💰',
     category: 'special' as BadgeCategory,
     requirement: {
       type: 'score',
-      value: 1000,
+      value: 10000,
     },
   },
 ];

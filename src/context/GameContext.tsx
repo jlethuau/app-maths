@@ -39,7 +39,7 @@ interface GameProviderProps {
 }
 
 export const GameProvider: FC<GameProviderProps> = ({ children }) => {
-  const { addPoints, updateProgress, unlockBadge, userProgress } = useApp();
+  const { addPoints, updateProgress, userProgress } = useApp();
   const [session, setSession] = useState<GameSession | null>(null);
   const [isGameActive, setIsGameActive] = useState(false);
   const [newBadges, setNewBadges] = useState<Badge[]>([]);
@@ -210,17 +210,30 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
         last50Accuracy,
       };
 
-      updateProgress({
-        statistics: updatedStats,
-      });
-
       // Vérifier les nouveaux badges
-      const unlockedBadges = checkUnlockedBadges(
+      const candidateBadges = checkUnlockedBadges(
         { ...userProgress, statistics: updatedStats }
       );
 
-      // Débloquer les badges
-      unlockedBadges.forEach((badge) => unlockBadge(badge));
+      // Filtrer les badges déjà débloqués
+      const existingBadgeIds = userProgress.badges.map((b) => b.id);
+      const unlockedBadges = candidateBadges.filter(
+        (badge) => !existingBadgeIds.includes(badge.id)
+      );
+
+      // Mettre à jour les stats ET les badges en une seule fois
+      updateProgress({
+        statistics: updatedStats,
+        badges: unlockedBadges.length > 0 
+          ? [
+              ...userProgress.badges,
+              ...unlockedBadges.map((badge) => ({
+                ...badge,
+                unlockedAt: new Date(),
+              }))
+            ]
+          : userProgress.badges,
+      });
       
       // Stocker les nouveaux badges pour l'affichage
       if (unlockedBadges.length > 0) {
