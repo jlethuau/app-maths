@@ -1,0 +1,207 @@
+/* StatsPage Styles */
+
+.page {
+  min-height: 100vh;
+  padding: var(--spacing-6) 0 var(--spacing-8);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-4);
+}
+
+.backButton {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-2xl);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.backButton:hover {
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-primary);
+  transform: translateX(-2px);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  text-align: center;
+  flex: 1;
+}
+
+.spacer {
+  width: 48px;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0 0 var(--spacing-5);
+  text-align: center;
+}
+
+/* Global Stats */
+.globalStats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.mainStat {
+  text-align: center;
+  padding: var(--spacing-4);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.mainStatValue {
+  font-size: var(--font-size-6xl);
+  font-weight: var(--font-weight-extrabold);
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+}
+
+.mainStatLabel {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-2);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-4);
+}
+
+.statItem {
+  text-align: center;
+  padding: var(--spacing-3);
+}
+
+.statValue {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-light);
+}
+
+.statLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  margin-top: var(--spacing-1);
+}
+
+/* Table Stats */
+.tableStatsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.tableStat {
+  padding: var(--spacing-4);
+  background: var(--color-bg-secondary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  transition: all var(--transition-base);
+}
+
+.tableStat:hover {
+  border-color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.tableStatHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-3);
+}
+
+.tableStatTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.tableStatRate {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+}
+
+.tableStatRate.good {
+  color: var(--color-success);
+}
+
+.tableStatDetails {
+  display: flex;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-3);
+  font-size: var(--font-size-sm);
+}
+
+.correct {
+  color: var(--color-success);
+}
+
+.incorrect {
+  color: var(--color-error);
+}
+
+.total {
+  color: var(--color-text-tertiary);
+  margin-left: auto;
+}
+
+.progressBar {
+  height: 8px;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--border-radius-full);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  transition: width var(--transition-slow);
+}
+
+.emptyState {
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-style: italic;
+  padding: var(--spacing-8) var(--spacing-4);
+}
+
+/* === RESPONSIVE === */
+
+@media (min-width: 640px) {
+  .title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

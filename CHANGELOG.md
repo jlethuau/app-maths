@@ -6,6 +6,37 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 ---
 
+## [0.4.0] - 2026-01-26
+
+### 🎨 Refonte Navigation & Structure
+
+#### Added
+- **SplashScreen** avec animation CSS (2×8=16) de 4 secondes au démarrage
+- **Nouvelle HomePage** avec KPI de progression (taux réussite, parties jouées, tables maîtrisées)
+- **Menu Bottom Sheet** moderne accessible depuis la HomePage
+- **StatsPage** détaillée avec performance globale et stats par table
+- **BadgesPage** affichant tous les badges débloqués/verrouillés
+- **SettingsPage** dédiée au paramétrage de partie (tables, temps)
+- **Version automatique** affichée en bas du menu (depuis package.json via .env)
+- Composant `BottomSheet` réutilisable pour modales modernes
+- Composant `AppMenu` avec navigation complète
+- Composant `ProgressKPI` pour affichage des statistiques clés
+
+#### Changed
+- **Flow de navigation** : SplashScreen → HomePage → SettingsPage → GamePage
+- HomePage originale renommée et adaptée en SettingsPage
+- Séparation claire : accueil (overview) vs paramétrage (configuration)
+- Menu accessible via icône hamburger sur HomePage
+
+#### Technical
+- Animation CSS pure (pas de dépendance externe)
+- Routing étendu (/, /home, /settings, /game, /stats, /badges)
+- Déclaration TypeScript pour imports JSON
+- Variable d'environnement VITE_APP_VERSION
+- Build ultra-optimisé : 40KB JS + 49KB CSS (gzip: 12KB + 8KB)
+
+---
+
 ## [0.3.0] - 2026-01-26
 
 ### 🎮 UI - Clavier Numérique Intégré

@@ -1,0 +1,222 @@
+/* SettingsPage Styles */
+
+.page {
+  min-height: 100vh;
+  padding: var(--spacing-6) 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-4);
+  animation: fadeIn 0.6s ease-out;
+}
+
+.backButton {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-2xl);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.backButton:hover {
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-primary);
+  transform: translateX(-2px);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  text-align: center;
+  flex: 1;
+}
+
+.spacer {
+  width: 48px;
+}
+
+/* Section Title */
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  margin: 0 0 var(--spacing-4);
+  text-align: center;
+}
+
+/* Table Selection */
+.tableGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-4);
+}
+
+.tableButton {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  background: var(--color-bg-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  
+  cursor: pointer;
+  transition: all var(--transition-base);
+  
+  font-family: var(--font-family);
+}
+
+.tableButton:hover:not(.tableButtonSelected) {
+  transform: translateY(-2px);
+  border-color: var(--color-primary);
+  background: var(--color-bg-card);
+}
+
+.tableButton:active {
+  transform: translateY(0);
+}
+
+.tableButton:focus {
+  outline: none;
+}
+
+.tableButton:focus-visible:not(.tableButtonSelected) {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+
+.tableNumber {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+}
+
+.tableButtonSelected {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  border-color: var(--color-primary-light);
+  box-shadow: var(--shadow-primary-glow);
+  transform: translateY(-2px);
+}
+
+.tableButtonSelected .tableNumber {
+  color: var(--color-text-primary);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.tableButtonSelected:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+.quickActions {
+  display: flex;
+  gap: var(--spacing-3);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Time Options */
+.timeOptions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-4);
+}
+
+.timeButton {
+  padding: var(--spacing-4);
+  
+  background: var(--color-bg-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  
+  font-family: var(--font-family);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.timeButton:hover:not(.timeButtonSelected) {
+  border-color: var(--color-accent);
+  background: var(--color-bg-card);
+  transform: translateY(-2px);
+}
+
+.timeButton:focus {
+  outline: none;
+}
+
+.timeButton:focus-visible:not(.timeButtonSelected) {
+  outline: 2px solid var(--color-accent-light);
+  outline-offset: 2px;
+}
+
+.timeButtonSelected {
+  background: var(--color-accent);
+  border-color: var(--color-accent-light);
+  color: var(--color-text-primary);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+.timeButtonSelected:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+.timeHint {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
+
+/* === ANIMATIONS === */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === RESPONSIVE === */
+
+@media (min-width: 640px) {
+  .content {
+    gap: var(--spacing-8);
+  }
+  
+  .title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .tableNumber {
+    font-size: var(--font-size-3xl);
+  }
+}

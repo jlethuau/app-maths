@@ -1,0 +1,160 @@
+/* SplashScreen Styles */
+
+.splashContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  padding: var(--spacing-6);
+  overflow: hidden;
+}
+
+.animationWrapper {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: var(--spacing-12);
+}
+
+.calculation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-6);
+  flex-wrap: wrap;
+  min-height: 200px;
+}
+
+.operand1 {
+  font-size: 120px;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+  text-shadow: 0 0 30px rgba(124, 58, 237, 0.8);
+  opacity: 0;
+  animation: popIn 0.5s ease-out 0.3s forwards;
+}
+
+.operator {
+  font-size: 80px;
+  font-weight: var(--font-weight-bold);
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  animation: popIn 0.5s ease-out 0.8s forwards;
+}
+
+.operand2 {
+  font-size: 120px;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+  text-shadow: 0 0 30px rgba(124, 58, 237, 0.8);
+  opacity: 0;
+  animation: popIn 0.5s ease-out 1.3s forwards;
+}
+
+.equals {
+  font-size: 80px;
+  font-weight: var(--font-weight-bold);
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  animation: popIn 0.5s ease-out 1.8s forwards;
+}
+
+.result {
+  font-size: 130px;
+  font-weight: var(--font-weight-extrabold);
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+  opacity: 0;
+  animation: popInBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2.3s forwards;
+}
+
+.appName {
+  font-size: var(--font-size-5xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-bottom: var(--spacing-4);
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+  animation: fadeInUp 0.8s ease-out 3.2s both;
+}
+
+.tagline {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-align: center;
+  animation: fadeInUp 0.8s ease-out 3.5s both;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes popInBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === RESPONSIVE === */
+
+@media (min-width: 640px) {
+  .operand1,
+  .operand2 {
+    font-size: 150px;
+  }
+
+  .operator,
+  .equals {
+    font-size: 100px;
+  }
+
+  .result {
+    font-size: 160px;
+  }
+
+  .appName {
+    font-size: var(--font-size-6xl);
+  }
+  
+  .tagline {
+    font-size: var(--font-size-xl);
+  }
+}
