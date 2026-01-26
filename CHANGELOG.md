@@ -6,6 +6,21 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 ---
 
+## [0.3.0] - 2026-01-26
+
+### 🎮 UI - Clavier Numérique Intégré
+
+#### Added
+- Clavier numérique intégré à l'écran de jeu (0–9, Effacer, Valider)
+- Feedback sonore léger au tap (respecte `soundEnabled`)
+- Affichage dynamique de la réponse saisie dans la carte de question (remplace le "?")
+
+#### Changed
+- Champ de réponse séparé masqué (valeur affichée directement dans le calcul)
+- Saisie centralisée via le clavier intégré pour limiter les mouvements d'écran
+
+---
+
 ## [0.2.1] - 2026-01-20
 
 ### 🐛 Corrections Critiques - Application Stable

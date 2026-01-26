@@ -7,6 +7,7 @@ interface QuestionCardProps {
   operand2: number;
   questionNumber?: number;
   totalQuestions?: number;
+  userAnswer?: string;
 }
 
 export const QuestionCard: FC<QuestionCardProps> = ({
@@ -14,6 +15,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
   operand2,
   questionNumber,
   totalQuestions,
+  userAnswer = '',
 }) => {
   return (
     <Card variant="gradient" padding="lg" className={styles.questionCard}>
@@ -28,7 +30,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         <span className={styles.operator}>×</span>
         <span className={styles.operand}>{operand2}</span>
         <span className={styles.equals}>=</span>
-        <span className={styles.answer}>?</span>
+        <span className={styles.answer}>{userAnswer || '?'}</span>
       </div>
     </Card>
   );

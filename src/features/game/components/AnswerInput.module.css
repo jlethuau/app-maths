@@ -11,6 +11,53 @@
   position: relative;
 }
 
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-3);
+  width: 100%;
+}
+
+.key {
+  padding: var(--spacing-4) var(--spacing-3);
+  font-family: var(--font-family);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  transition: transform var(--transition-fast), box-shadow var(--transition-base),
+    border-color var(--transition-base);
+  cursor: pointer;
+}
+
+.key:active {
+  transform: scale(0.98);
+}
+
+.key:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.keyAction {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.keySubmit {
+  background: var(--color-primary);
+  color: var(--color-text-primary);
+  border-color: transparent;
+  box-shadow: var(--shadow-primary);
+}
+
+.keySubmit:active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-primary-glow);
+}
+
 .input {
   width: 100%;
   padding: var(--spacing-5) var(--spacing-6);
@@ -61,5 +108,14 @@
   .input {
     font-size: var(--font-size-4xl);
     padding: var(--spacing-6) var(--spacing-8);
+  }
+
+  .key {
+    font-size: var(--font-size-3xl);
+    padding: var(--spacing-5) var(--spacing-4);
+  }
+
+  .keyAction {
+    font-size: var(--font-size-xl);
   }
 }

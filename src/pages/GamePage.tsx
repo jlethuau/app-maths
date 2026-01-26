@@ -21,6 +21,7 @@ export const GamePage: FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [gameEnded, setGameEnded] = useState(false);
   const [lastGameConfig, setLastGameConfig] = useState<GameConfig | null>(null);
+  const [currentAnswer, setCurrentAnswer] = useState('');
 
   // Définir les handlers avant le early return
   const handleAnswer = useCallback(
@@ -38,6 +39,7 @@ export const GamePage: FC = () => {
       setTimeout(() => {
         setFeedback(null);
         setIsProcessing(false);
+        setCurrentAnswer('');
         
         if (isLastQuestion) {
           // Si c'était la dernière question, terminer le jeu
@@ -82,6 +84,7 @@ export const GamePage: FC = () => {
       setGameEnded(false);
       setFeedback(null);
       setIsProcessing(false);
+      setCurrentAnswer('');
       setLastGameConfig(null); // Reset pour capturer la nouvelle config
       startGame(lastGameConfig);
     }
@@ -152,6 +155,7 @@ export const GamePage: FC = () => {
               operand2={currentQuestion.operand2}
               questionNumber={questionNumber}
               totalQuestions={totalQuestions}
+              userAnswer={currentAnswer}
             />
           </div>
 
@@ -186,7 +190,8 @@ export const GamePage: FC = () => {
               <AnswerInput
                 onSubmit={handleAnswer}
                 disabled={!isGameActive || isProcessing}
-                autoFocus
+                value={currentAnswer}
+                onChange={setCurrentAnswer}
               />
             </div>
           )}
