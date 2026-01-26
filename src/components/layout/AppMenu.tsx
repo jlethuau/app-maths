@@ -1,15 +1,13 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BottomSheet } from './BottomSheet';
+import { APP_VERSION } from '@/constants/version';
 import styles from './AppMenu.module.css';
 
 interface AppMenuProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-// Récupération automatique de la version depuis package.json
-const appVersion = import.meta.env.VITE_APP_VERSION || '0.3.0';
 
 export const AppMenu: FC<AppMenuProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -46,7 +44,7 @@ export const AppMenu: FC<AppMenuProps> = ({ isOpen, onClose }) => {
           </button>
         </nav>
 
-        <div className={styles.version}>v{appVersion}</div>
+        <div className={styles.version}>v{APP_VERSION}</div>
       </div>
     </BottomSheet>
   );
