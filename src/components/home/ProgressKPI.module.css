@@ -2,10 +2,10 @@
 
 .kpiContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: var(--spacing-4);
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-3);
   width: 100%;
-  margin-bottom: var(--spacing-6);
+  margin-bottom: var(--spacing-3);
 }
 
 .kpiCard {
@@ -13,50 +13,55 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: var(--spacing-5) !important;
+  padding: var(--spacing-3) var(--spacing-2) !important;
   transition: transform var(--transition-base);
 }
 
 .kpiCard:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
 }
 
 .kpiIcon {
-  font-size: var(--font-size-4xl);
-  margin-bottom: var(--spacing-3);
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--spacing-2);
 }
 
 .kpiValue {
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-extrabold);
   color: var(--color-primary-light);
-  margin-bottom: var(--spacing-2);
+  margin-bottom: var(--spacing-1);
   text-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
 }
 
 .kpiLabel {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
   font-weight: var(--font-weight-medium);
+  line-height: 1.2;
 }
 
 /* === RESPONSIVE === */
 
 @media (min-width: 640px) {
   .kpiContainer {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-6);
+    gap: var(--spacing-5);
+    margin-bottom: var(--spacing-6);
+  }
+
+  .kpiCard {
+    padding: var(--spacing-5) var(--spacing-3) !important;
   }
 
   .kpiIcon {
-    font-size: var(--font-size-5xl);
-  }
-
-  .kpiValue {
     font-size: var(--font-size-4xl);
   }
 
+  .kpiValue {
+    font-size: var(--font-size-3xl);
+  }
+
   .kpiLabel {
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-sm);
   }
 }

@@ -6,6 +6,26 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 ---
 
+## [0.4.1] - 2026-01-26
+
+### 🎯 Optimisation Mobile
+
+#### Changed
+- **Écran d'accueil** : réduction de 40% de la taille des cartes KPI pour éviter le scroll
+- **Espacements** : réduction des gaps et paddings sur mobile (spacing-6 → spacing-3)
+- **Typographie** : tailles de police réduites sur mobile (optimisation lisibilité)
+- **GamePage** : espacements réduits pour tenir sans scroll sur petits écrans
+- **Scroll horizontal** : interdit sur toutes les pages (overflow-x: hidden)
+
+#### Technical
+- KPI cards : padding réduit, icônes plus petites (4xl → 2xl)
+- HomePage : gaps réduits (spacing-6 → spacing-3)
+- GamePage : padding réduit (spacing-6 → spacing-3)
+- Toutes les pages : overflow-x: hidden pour empêcher scroll horizontal
+- Responsive : tailles agrandies sur desktop (≥640px)
+
+---
+
 ## [0.4.0] - 2026-01-26
 
 ### 🎨 Refonte Navigation & Structure

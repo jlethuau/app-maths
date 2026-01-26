@@ -3,6 +3,7 @@
 .page {
   min-height: 100vh;
   padding: var(--spacing-6) 0 var(--spacing-8);
+  overflow-x: hidden;
 }
 
 .content {

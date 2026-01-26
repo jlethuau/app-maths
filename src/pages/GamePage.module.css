@@ -2,15 +2,16 @@
 
 .page {
   min-height: 100vh;
-  padding: var(--spacing-6) 0;
+  padding: var(--spacing-3) 0;
   display: flex;
   align-items: center;
+  overflow-x: hidden;
 }
 
 .gameContainer {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-6);
+  gap: var(--spacing-3);
   width: 100%;
 }
 
