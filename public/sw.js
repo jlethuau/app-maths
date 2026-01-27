@@ -1,5 +1,6 @@
 // Service Worker pour PWA - App Maths
-const CACHE_NAME = 'app-maths-v0.2.1';
+const CACHE_PREFIX = 'app-maths-';
+const CACHE_NAME = `${CACHE_PREFIX}v0.2.1`;
 const urlsToCache = [
   '/',
   '/index.html',
@@ -22,7 +23,8 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
+          // Ne jamais supprimer les caches d'autres apps sur la même origine
+          if (cacheName.startsWith(CACHE_PREFIX) && cacheName !== CACHE_NAME) {
             console.log('🗑️ Suppression ancien cache:', cacheName);
             return caches.delete(cacheName);
           }

@@ -6,6 +6,9 @@ export const STORAGE_KEYS = {
   GAME_SESSION: 'app-maths:game-session',
 } as const;
 
+export const APP_STORAGE_PREFIX = 'app-maths:' as const;
+export const APP_CACHE_PREFIX = 'app-maths-' as const;
+
 /**
  * Utilitaires pour gérer le localStorage de manière sécurisée
  */
@@ -59,3 +62,73 @@ export const storage = {
     }
   },
 };
+
+/**
+ * Supprime uniquement les données de cette app sur l'appareil (sans toucher d'autres apps).
+ * - LocalStorage: suppression des clés préfixées `app-maths:`
+ * - Cache Storage: suppression des caches préfixés `app-maths-`
+ * - Service Worker: désinscription ciblée de `sw.js` (si présent)
+ * - Puis recharge de la page
+ */
+export async function resetAppDataOnDevice(): Promise<void> {
+  // 1) LocalStorage (ciblé par préfixe)
+  try {
+    const keys = Array.from({ length: window.localStorage.length }, (_, i) =>
+      window.localStorage.key(i)
+    ).filter((k): k is string => Boolean(k));
+
+    keys.forEach((key) => {
+      if (key.startsWith(APP_STORAGE_PREFIX)) {
+        window.localStorage.removeItem(key);
+      }
+    });
+  } catch (error) {
+    console.error('Error clearing app localStorage:', error);
+  }
+
+  // 2) Cache Storage (ciblé par préfixe)
+  try {
+    if ('caches' in window) {
+      const cacheNames = await window.caches.keys();
+      await Promise.all(
+        cacheNames
+          .filter((name) => name.startsWith(APP_CACHE_PREFIX))
+          .map((name) => window.caches.delete(name))
+      );
+    }
+  } catch (error) {
+    console.error('Error clearing app caches:', error);
+  }
+
+  // 3) Service Worker (désinscription ciblée sur sw.js)
+  try {
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(
+        regs.map(async (reg) => {
+          const scriptUrl =
+            reg.active?.scriptURL ??
+            reg.waiting?.scriptURL ??
+            reg.installing?.scriptURL ??
+            null;
+
+          if (!scriptUrl) return;
+
+          // Cible uniquement notre SW
+          const isOurSw = scriptUrl.endsWith('/sw.js') || scriptUrl.includes('/sw.js?');
+          if (!isOurSw) return;
+
+          const scriptOrigin = new URL(scriptUrl).origin;
+          if (scriptOrigin !== window.location.origin) return;
+
+          await reg.unregister();
+        })
+      );
+    }
+  } catch (error) {
+    console.error('Error unregistering service worker:', error);
+  }
+
+  // 4) Recharge
+  window.location.reload();
+}

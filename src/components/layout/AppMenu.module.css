@@ -20,6 +20,22 @@
   margin-bottom: var(--spacing-8);
 }
 
+.dangerZone {
+  margin-top: auto;
+  margin-bottom: var(--spacing-6);
+}
+
+.dangerItem {
+  border-color: rgba(220, 38, 38, 0.35);
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.dangerItem:hover {
+  border-color: rgba(220, 38, 38, 0.6);
+  background: rgba(220, 38, 38, 0.12);
+  transform: translateX(4px);
+}
+
 .menuItem {
   display: flex;
   align-items: center;
