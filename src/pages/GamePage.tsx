@@ -1,4 +1,4 @@
-import { FC, useState, useCallback, useEffect } from 'react';
+import { FC, useState, useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '@/components/layout/Container';
 import { Card } from '@/components/ui/Card';
@@ -33,6 +33,12 @@ export const GamePage: FC = () => {
   const [lastGameConfig, setLastGameConfig] = useState<GameConfig | null>(null);
   const [currentAnswer, setCurrentAnswer] = useState('');
   const [showBadgePopup, setShowBadgePopup] = useState(false);
+  const [currentTimeRemaining, setCurrentTimeRemaining] = useState<number | undefined>(
+    undefined
+  );
+  const questionStartMsRef = useRef<number>(performance.now());
+  const questionIndex = session?.currentQuestionIndex;
+  const questionTimePerQuestion = session?.timePerQuestion;
 
   // Définir les handlers avant le early return
   const handleAnswer = useCallback(
@@ -40,7 +46,14 @@ export const GamePage: FC = () => {
       if (isProcessing || !session) return;
       
       setIsProcessing(true);
-      const isCorrect = answerQuestion(answer);
+      const timeToAnswerSecondsRaw = (performance.now() - questionStartMsRef.current) / 1000;
+      const timeToAnswerSeconds = Math.max(0, Math.round(timeToAnswerSecondsRaw * 100) / 100);
+
+      const isCorrect = answerQuestion(answer, {
+        timeToAnswer: timeToAnswerSeconds,
+        timeRemaining: currentTimeRemaining,
+        totalTime: session.timePerQuestion,
+      });
       setFeedback(isCorrect ? 'correct' : 'incorrect');
 
       // Vérifier si c'était la dernière question
@@ -61,7 +74,7 @@ export const GamePage: FC = () => {
         }
       }, 1500);
     },
-    [answerQuestion, nextQuestion, endGame, isProcessing, session]
+    [answerQuestion, nextQuestion, endGame, isProcessing, session, currentTimeRemaining]
   );
 
   const handleTimeUp = useCallback(() => {
@@ -81,6 +94,19 @@ export const GamePage: FC = () => {
       setLastGameConfig(config);
     }
   }, [session, lastGameConfig]);
+
+  // Reset le chrono "temps de réponse" à chaque nouvelle question
+  useEffect(() => {
+    if (questionIndex === undefined) return;
+    questionStartMsRef.current = performance.now();
+
+    // Initialiser le temps restant (utile avant le premier tick)
+    setCurrentTimeRemaining(
+      questionTimePerQuestion === Infinity || questionTimePerQuestion === undefined
+        ? undefined
+        : questionTimePerQuestion
+    );
+  }, [questionIndex, questionTimePerQuestion]);
 
   // Détecter la fin de partie
   useEffect(() => {
@@ -170,6 +196,7 @@ export const GamePage: FC = () => {
               totalTime={session.timePerQuestion}
               isActive={isGameActive && !isProcessing}
               onTimeUp={handleTimeUp}
+              onTick={setCurrentTimeRemaining}
               key={session.currentQuestionIndex} // Reset le timer à chaque question
             />
           )}

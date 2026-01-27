@@ -5,37 +5,42 @@ interface TimerProps {
   totalTime: number; // en secondes
   isActive: boolean;
   onTimeUp: () => void;
+  onTick?: (timeRemaining: number) => void;
 }
 
-export const Timer: FC<TimerProps> = ({ totalTime, isActive, onTimeUp }) => {
+export const Timer: FC<TimerProps> = ({ totalTime, isActive, onTimeUp, onTick }) => {
   const [timeRemaining, setTimeRemaining] = useState(totalTime);
   const hasCalledTimeUp = useRef(false);
 
   useEffect(() => {
     setTimeRemaining(totalTime);
     hasCalledTimeUp.current = false;
-  }, [totalTime]);
+    onTick?.(totalTime);
+  }, [totalTime, onTick]);
 
   useEffect(() => {
     if (!isActive) return;
 
     const interval = setInterval(() => {
       setTimeRemaining((prev) => {
-        if (prev <= 1) {
+        const next = prev <= 1 ? 0 : prev - 1;
+
+        if (next === 0) {
           clearInterval(interval);
           // Appeler onTimeUp de manière asynchrone pour éviter le setState pendant render
           if (!hasCalledTimeUp.current) {
             hasCalledTimeUp.current = true;
             setTimeout(() => onTimeUp(), 0);
           }
-          return 0;
         }
-        return prev - 1;
+
+        onTick?.(next);
+        return next;
       });
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isActive, onTimeUp]);
+  }, [isActive, onTimeUp, onTick]);
 
   const percentage = (timeRemaining / totalTime) * 100;
   

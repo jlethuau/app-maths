@@ -2,6 +2,7 @@
  * Test de démonstration pour visualiser la génération des questions
  * Ce test montre les questions générées pour différentes configurations
  */
+/* eslint-disable no-console */
 import { describe, it, expect } from 'vitest';
 import { generateQuestions } from './gameUtils';
 

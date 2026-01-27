@@ -24,7 +24,10 @@ interface GameContextType {
   isGameActive: boolean;
   newBadges: Badge[];
   startGame: (config: GameConfig) => void;
-  answerQuestion: (answer: number) => boolean;
+  answerQuestion: (
+    answer: number,
+    meta?: { timeToAnswer?: number; timeRemaining?: number; totalTime?: number }
+  ) => boolean;
   nextQuestion: () => void;
   endGame: () => GameSession | null;
   pauseGame: () => void;
@@ -78,7 +81,10 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
 
   // Répondre à une question
   const answerQuestion = useCallback(
-    (answer: number): boolean => {
+    (
+      answer: number,
+      meta?: { timeToAnswer?: number; timeRemaining?: number; totalTime?: number }
+    ): boolean => {
       // Variable pour capturer le résultat
       let resultIsCorrect = false;
 
@@ -97,13 +103,20 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
         const comboMultiplier = getComboMultiplier(newCombo);
 
         // Calcul du score avec le nouveau combo
-        const scoreCalc = calculateScore(isCorrect, newCombo);
+        const scoreCalc = calculateScore(
+          isCorrect,
+          newCombo,
+          meta?.timeRemaining,
+          meta?.totalTime
+        );
 
         // Mettre à jour la question
         const updatedQuestion: Question = {
           ...currentQ,
           userAnswer: answer,
           isCorrect,
+          timeToAnswer: meta?.timeToAnswer,
+          timeRemaining: meta?.timeRemaining,
           attempts: currentQ.attempts + 1,
           pointsEarned: scoreCalc.totalPoints,
           comboMultiplier,
@@ -162,13 +175,13 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
 
       // Compter réponses rapides (<2s)
       const fastAnswers = currentSession.questions.filter(
-        (q) => q.isCorrect && (q.timeToAnswer || 0) < 2
+        (q) => q.isCorrect && typeof q.timeToAnswer === 'number' && q.timeToAnswer < 2
       ).length;
 
       // Mettre à jour historique des 50 dernières questions
       const newQuestionResults = currentSession.questions.map((q) => ({
         isCorrect: q.isCorrect || false,
-        timeToAnswer: q.timeToAnswer || 0,
+        timeToAnswer: typeof q.timeToAnswer === 'number' ? q.timeToAnswer : Number.POSITIVE_INFINITY,
       }));
       const existingLast50 = userProgress.statistics.last50Questions || [];
       const updatedLast50 = [
@@ -247,7 +260,7 @@ export const GameProvider: FC<GameProviderProps> = ({ children }) => {
     setIsGameActive(false);
 
     return finalSession;
-  }, [updateProgress, userProgress.statistics]);
+  }, [updateProgress, userProgress]);
 
   // Passer à la question suivante
   const nextQuestion = useCallback(() => {

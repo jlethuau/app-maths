@@ -13,7 +13,7 @@ Tous les autres fichiers l'importent automatiquement.
 
 ```bash
 # Modifier la ligne :
-"version": "0.7.0"  # Nouvelle version
+"version": "0.8.0"  # Nouvelle version
 ```
 
 ### Étape 2 : Mettre à jour le CHANGELOG
@@ -70,11 +70,11 @@ Format : **MAJOR.MINOR.PATCH** (semver)
 ### Dans le code
 ```typescript
 import { APP_VERSION } from '@/constants/version';
-console.log(APP_VERSION); // "0.7.0"
+console.log(APP_VERSION); // "0.8.0"
 ```
 
 ### Dans l'application
-- Menu → Footer → "v0.7.0"
+- Menu → Footer → "v0.8.0"
 
 ### En ligne de commande
 ```bash

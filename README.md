@@ -17,7 +17,7 @@ Application web ludique pour apprendre les tables de multiplication (CE2).
 
 ## ✨ Fonctionnalités
 
-### 🎯 Version Actuelle (v0.7.0)
+### 🎯 Version Actuelle (v0.8.0)
 - ✅ Quiz de multiplication chronométré (5s, 10s, 15s, Infini)
 - ✅ Sélection multi-tables (1-10)
 - ✅ Système de combo (x2, x3, x4) avec multiplicateurs de points

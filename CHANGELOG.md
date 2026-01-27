@@ -6,6 +6,18 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 ---
 
+## [0.8.0] - 2026-01-27
+
+### Fixed
+- **Badges** : correction du calcul du badge **Éclair** (mesure réelle de `timeToAnswer` au lieu de considérer `undefined` comme 0)
+- **Badges** : le badge **Tireur d'Élite** requiert désormais réellement **50 questions** (et non “jusqu’à 50”)
+- **Badges** : correction du check **Sans Faute** (lecture de `hasPerfectGame` depuis `statistics`)
+
+### Technical
+- `Timer` expose le `timeRemaining` via un callback pour permettre de calculer un bonus temps cohérent
+
+---
+
 ## [0.7.0] - 2026-01-26 🚀 VERSION MAJEURE
 
 ### 🎉 Résumé de la Version

@@ -115,7 +115,7 @@ const checkSpeedBadge = (
 ): boolean => {
   // On devra tracker le nombre de réponses rapides
   // Pour l'instant on vérifie si on a assez de données
-  const fastAnswers = (statistics as any).fastAnswersCount || 0;
+  const fastAnswers = statistics.fastAnswersCount || 0;
   return fastAnswers >= 10;
 };
 
@@ -129,13 +129,17 @@ const checkAccuracyBadge = (
 ): boolean => {
   if (badgeId === 'perfect_game') {
     // Vérifié via l'historique des sessions (à implémenter)
-    const hasPerfectGame = (userProgress as any).hasPerfectGame || false;
+    const hasPerfectGame = userProgress.statistics.hasPerfectGame || false;
     return hasPerfectGame;
   }
 
   if (badgeId === 'sharpshooter') {
-    // 95%+ sur les 50 dernières questions
-    const last50Accuracy = (userProgress.statistics as any).last50Accuracy || 0;
+    // 95%+ de précision sur 50 questions (il faut bien 50 réponses)
+    const last50 = userProgress.statistics.last50Questions || [];
+    if (last50.length < 50) return false;
+
+    const last50Correct = last50.filter((q) => q.isCorrect).length;
+    const last50Accuracy = Math.round((last50Correct / 50) * 100);
     return last50Accuracy >= requiredAccuracy;
   }
 

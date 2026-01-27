@@ -9,6 +9,8 @@ interface ImportMeta {
 }
 
 declare module '*.json' {
-  const value: any;
+  // JSON imports are treated as unknown to avoid `any`.
+  // Consumers should narrow/cast as needed.
+  const value: unknown;
   export default value;
 }
