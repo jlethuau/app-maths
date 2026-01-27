@@ -8,6 +8,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 ## [0.8.0] - 2026-01-27
 
+### Added
+- **Données locales** : ajout d'une action dans le menu pour **nettoyer/réinitialiser** les données de l'app sur l'appareil (LocalStorage + caches + désinscription du Service Worker), puis recharger la page
+
 ### Fixed
 - **Badges** : correction du calcul du badge **Éclair** (mesure réelle de `timeToAnswer` au lieu de considérer `undefined` comme 0)
 - **Badges** : le badge **Tireur d'Élite** requiert désormais réellement **50 questions** (et non “jusqu’à 50”)
